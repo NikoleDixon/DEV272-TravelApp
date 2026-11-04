@@ -1,3 +1,52 @@
+# The problem, target users, and one-sentence purpose are written down.
+   ## The problem
+      People often find travel destinations through different websites and social media platforms, but it can be difficult to keep track of places they want to visit and organize their ideas into an actual trip.
+
+   ## Target users
+      People who want to organize their travel ideas in one place, looking for new places to visit, enjoy traveling or want to travel more. 
+      People who want to share their favorite places with others. 
+
+   ## One-sentence purpose
+      Our app helps travelers find trip ideas, save them in one bucket list, and turn them into a real plan.
+
+
+# 3–5 core features:
+   Explore - searching for a trip ideas
+   Bucket List - Saving trip ideas
+   Profile - login
+
+   Nice to have:
+      Plan Trip - start planning a new trip with data provided by the user
+      Locals who want to share their favorite places with others. 
+
+# Out-of-scope list
+  Setting for user except light and dark coloring
+  Bookings
+  Blog
+  Users adding videos
+  AI agent
+  Comments from user
+  Notifications
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # DEV 272 – Fall 2026 Starter App
 
 Bellevue College · Mobile Application Development Fundamentals · Tuesdays 5:30–7:40pm on Zoom
