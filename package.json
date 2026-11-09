@@ -1,5 +1,6 @@
 {
-  "name": "dev-272-fall-26-template",
+  "name": "TravelApp",
+  "description": "A simple app where users can create a bucket list, explore and plan the next vacation",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "dependencies": {
