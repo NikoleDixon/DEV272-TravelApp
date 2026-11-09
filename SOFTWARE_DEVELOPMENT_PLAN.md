@@ -25,7 +25,7 @@ People often find travel destinations through different websites and social medi
 ### Required Features
 
 - Navigation: Expo Router will be used with tab navigation for Explore, Bucket List, Plan, and Profile, and stack navigation for Destination Details and Trip Details. Dynamic routes will display details for individual destinations and trips.
-- 4 Screens
+- 6 Screens
   -Explore
     -Destination details
   -Bucket list
@@ -33,17 +33,18 @@ People often find travel destinations through different websites and social medi
     -Trip details
   -Profile
 - 2 Forms with validation
-  -Create account
-    -validate name
-    -validate email
-    -validate password
-  -Sign in
-    -validate email 
-    -validate password
+  - Sign in
+    - validate email. 
+    - validate password.
+  - Plan trip 
+    - validate the trip name.
+    - validate the destination.
 - Remote data storage: Supabase will be used for user authentication and to store user profiles, travel     destinations, bucket list items, and trip planning information.
 - Data fetching: TanStack Query will be used to fetch, cache, and update travel destinations, bucket list
   items, and trip information from Supabase.
-
+- Local persistence: AsyncStorage will be used to save the user's light or dark mode preference.
+- Advanced feature: Search & Filter. Users will be able to search for destinations by name and filter them by category, such as beaches, mountains, or cities.
+- Testing and quality tools: Jest and React Native Testing Library will be used for testing. ESLint, Prettier, and Husky will help maintain code quality.
 - Validate app viability through prototyping and testing.
 - Demonstrate understanding of mobile development principles, project management, and teamwork.
 
@@ -53,7 +54,7 @@ People often find travel destinations through different websites and social medi
 
 **In Scope:**
 
-- Explore: trip ideas with a section to filter by type of destination.
+- Explore: Users can discover travel destinations, search by name, and filter by destination type.
 - Bucket List: the user will save trip ideas.
 - Profile: this will be a log in screen.
 - Plan Trip: start planning a new trip with data provided by the user
@@ -80,6 +81,7 @@ People often find travel destinations through different websites and social medi
 - Create wireframes and user flow diagrams.
 - Set up project repository (GitHub).
 - Choose tech stack, libraries, and tools (course stack: Expo Router, Supabase, TanStack Query, AsyncStorage; list anything extra and why).
+- Verify that ESLint, Prettier, Jest, and Husky are correctly configured in the project repository.
 
 **Deliverables:**
 
@@ -92,8 +94,10 @@ People often find travel destinations through different websites and social medi
 - Set up navigation using Expo Router (tabs and stack).
 - Create the main screens: Explore, Bucket List, Plan, and Profile.
 - Create a Destination Details screen using a dynamic route.
+- Create a basic Trip Details screen using a dynamic route.
 - Create a reusable component to display destinations.
 - Add colors and styles based on our wireframes.
+- Set up basic shared state for the app.
 
 **Deliverables:**
 
@@ -103,34 +107,51 @@ People often find travel destinations through different websites and social medi
 
 ### Week 3: Data & Authentication
 
-- [List out specific focus areas / minor tasks]
+- Set up Supabase for our app.
+- Create tables to store destinations and saved places.
+- Connect the Explore screen to Supabase using TanStack Query.
+- Set up user authentication with Supabase Auth.
+- Allow users to save destinations to their Bucket List.
 
 **Deliverables:**
 
-- [Deliverable 1] – [Assigned person]
-- [Deliverable 2] – [Assigned person]
-- [Deliverable 3] – [Assigned person]
+- Supabase database connected to the app. – who?
+- Explore screen displaying destinations from Supabase. – who?
+- Users can save destinations to their Bucket List. - who?
+- Basic Sign In form with validation. – who?
 
 ### Week 4: Trip Planning
 
-- [List out specific focus areas / minor tasks]
+- Create the plan trip form (trip name, destinations, travel dates).
+- Add form validations using react hook form and zod.
+- Save trip information to Supabase.
+- Display saved trip information on the Trip Details screen.
+- Test the plan trip form.
+- Add search by name and category filters to the Explore screen.
 - Note: Thanksgiving (Nov 26–27) falls in this sprint. Plan lighter and decide who is available.
 
 **Deliverables:**
 
-- [Deliverable 1] – [Assigned person]
-- [Deliverable 2] – [Assigned person]
-- [Deliverable 3] – [Assigned person]
+- Plan Trip form with validation. - who?
+- Trip information saved and displayed. - who?
+- Search & Filter working on the Explore screen. - who?
 
 ### Week 5: Testing & Integration
 
-- [List out specific focus areas / minor tasks]
+- Connect and review all main app features.
+- Use AsyncStorage to save the user's light or dark mode preference.
+- Test the screens and forms using jest and react native testing library.
+- Check navigation, forms, and Supabase integration.
+- Fix bugs and improve accessibility.
+- Check that the navigation and Supabase work correctly. 
+- Fix bugs and check accesibility. 
 
 **Deliverables:**
 
-- [Deliverable 1] – [Assigned person]
-- [Deliverable 2] – [Assigned person]
-- [Deliverable 3] – [Assigned person]
+- The main app features is connected and working. - who?
+- Theme preference saved locally. - who?
+- Automated tests and quality checks passing. - who?
+- Bug fixes and accesibility - who?
 
 ### Week 6: Presentation
 
@@ -149,47 +170,64 @@ People often find travel destinations through different websites and social medi
 
 ## Success Criteria
 
-- [Success Criterion 1]
-- [Success Criterion 2]
-- [Success Criterion 3]
-- [Success Criterion 4]
-- [Success Criterion 5]
+- The user can navigate between the main screens without errors.
+- The Explore screen displays destinations from Supabase.
+- The user can sign in and save destinations to the bucket list.
+- The user can create a trip and view their saved trip details.
+- The app passes the required tests and has no major bugs.
 
 **How will you measure success for each criterion?**  
-**How will you assign ownership?**
+We will measure success by testing navigation between all main screens and checking that destinations load correctly from Supabase. We will also test if users can sign in, save destinations to their Bucket List, and create trips. We will check that trip information is saved and displayed correctly. Finally, we will run automated tests and check for major bugs.
 
+**How will you assign ownership?**
+We will assign one team member to each success criterion based on their role and responsibilities. All team members will help with testing and reviewing the app to make sure everything works correctly. We will discuss and confirm ownership during our team meetings.
 ---
 
 ## Tools & Libraries
 
 - **React Native / Expo** – Mobile development
 - **GitHub Projects** – Task management
-- [Add tools and libraries you intend to use for this project]
-
+- React Native / Expo – Mobile app development.
+- TypeScript.  
+- Expo Router. - To navegate between screens.
+- Supabase – To use it as a remote database and authentication.
+- TanStack Query – to do the data fetching and caching.
+- React Hook Form – We will us this one for form management.
+- Zod – To validate all the sections of our forms.
+- AsyncStorage – To save locally the preference of the user light mode or dark mode.
+- Jest – To automate the testing.
+- React Native Testing Library – Component to testing.
+- ESLint – To check the quality of the code.
+- Prettier – To format all the code.
+- Husky – Check the code before sending to git. 
+- GitHub Projects – For task management.
 ---
 
 ## Data
 
-| Table or API Resource | Fields | Screens That Use It |
-|-----------------------|--------|---------------------|
-| [Name] | [Field names and types] | [Screen names] |
-
+|Table or API Resource|               Fields                          | Screens That Use It |
+|---------------------|-----------------------------------------------|---------------------|
+| destinations        |id (UUID), name (text), category (text), description (text), image_url (text)     |    Explore, Destination Details  |
+| bucket_list        |id (UUID), user_id (UUID), destination_id (UUID)  |    Bucket List, Destination Details  |
+| trips        |id (UUID), user_id (UUID), name (text), destination_id (UUID), start_date (date), end_date (date)  |    Plan, Trip Details  |
+| Supabase Auth       |id (UUID), email (text)  |    Profile and sign in  |
+| AsyncStorage       |theme (string: light or dark)  |    Theme settings across the app  |
 ---
 
 ## Sprint Planning & Team Meetings
 
 - **Sprint Duration:** 1 Week
-- **Kickoff Meeting:** Every [Pick a day of week] – Plan sprint goals, assign tasks, review feedback from previous week.
-- **Stand-Up Meetings:** 15-minute daily check-ins to share progress, blockers, and updates.
-  - [List details about how your team will conduct their daily standup] (async, in-person, Discord)
-- **Midweek Sync:** Optional working session/check-in to support collaboration.
-- **Sprint Review & Retrospective:** Every [Pick a day of week] – Demo completed features, gather feedback, and identify improvements for next sprint.
+- **Kickoff Meeting:** Every Monday at 11:00am – Plan sprint goals, assign tasks, review feedback from previous week.
+- **Stand-Up Meetings:** Every Monday and Wednesday at 11:00 AM. Meetings are scheduled for 30 minutes but can be extended if needed. We will share our progress, discuss any problems, and ask for help when necessary.
+Our stand-up meetings will be held online through Microsoft Teams. We will also use our Teams group chat to share updates, ask questions, and request help between meetings. We have also exchanged phone numbers and created an iMessage group chat for emergencies or urgent situations.
+- **Midweek Sync:** Every Wednesday at 11:00 AM. We will review our progress, discuss any blockers, and work together to solve problems.
+- **Sprint Review & Retrospective:** During our Monday meeting, we will review the previous sprint, discuss what went well, what could be improved, and plan the next sprint.
 
 **Task Management:**  
-All tasks tracked using GitHub Projects. Tasks are assigned with clear descriptions, deadlines, and review requirements.
+We will use GitHub Projects to organize our tasks. Each task will have a description, a team member, and clear goals. We will use Backlog, Ready, In Progress, In Review, and Done to see our progress. During our Monday and Wednesday meetings, we will talk about our tasks and any problems.
 
 **Communication Tools:**  
-Teams are encouraged to use Slack, Discord, or similar tools for real-time communication.
+We will use Microsoft Teams as our main communication tool. We have a group chat to share updates, ask questions, and help each other. We also have an iMessage group chat and each other's phone numbers for emergencies.
 
 ---
 
@@ -197,41 +235,44 @@ Teams are encouraged to use Slack, Discord, or similar tools for real-time commu
 
 ### Project Manager – Oversees timeline and deliverables
 
-- [Primary Student's name]
-- [Secondary Student's name]
+- Nikole Dixon: NikoleDixon
+- Jaqueline Navarro: JaquelineNavarro
 
 ### Frontend Developer(s) – UI implementation and styling
 
-- [Primary Student's name]
-- [Secondary Student's name]
+- Jaqueline Navarro: JaquelineNavarro
+- Lizbeth Garcia: izbethgarcia
 
 ### Backend Integrator – API and state management
 
-- [Primary Student's name]
-- [Secondary Student's name]
+- Lizbeth Garcia: izbethgarcia
+- Jaqueline Navarro: JaquelineNavarro
 
 ### QA/Tester – Testing, bug tracking, and CI
 
-- [Primary Student's name]
-- [Secondary Student's name]
+- Nikole Dixon: NikoleDixon
+- Lizbeth Garcia: izbethgarcia
 
 ### UI/UX Designer – Wireframes, prototypes, and polish
 
-- [Primary Student's name]
-- [Secondary Student's name]
+- Jaqueline Navarro: JaquelineNavarro
+- Nikole Dixon: NikoleDixon
+
+All team members will help with coding, testing, and reviewing the app when needed.
 
 ---
 
 ## Version Control Workflow (Required)
 
 - **Main Branch:** Stable releases
-  - [linkto](githublink)
+  - https://github.com/NikoleDixon/DEV272-TravelApp/tree/main
 
 - **Dev Branch:** Ongoing development
-  - [linkto](githublink)
+  - https://github.com/NikoleDixon/DEV272-TravelApp/tree/develop
 
 - **Feature Branches:** One per task/feature
+Each team member will create a new branch for each task or feature. We will not work directly on main or develop.
 
 - **Pull Requests:** Code reviews and testing before merge
-
+ When a task is finished, we will create a Pull Request to merge the changes into develop. Another team member will review the code, and the required tests and checks must pass before merging.
 
