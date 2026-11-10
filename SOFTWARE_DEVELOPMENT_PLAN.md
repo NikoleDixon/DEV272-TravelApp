@@ -1,52 +1,58 @@
-## Project: Travel App (Still working on the name)
+## Project: Travel App Roovia
 
 **Platform:** React Native with Expo  
-**Timeline:** 6 Weeks  
+**Timeline:** Sprint 0 (November 3–10, 2026) followed by four one-week development sprints (November 11–December 8, 2026).
 **Team Members:** 
--NikoleDixon:Scrum, DevOps QA prime
--izbethgarcia:Back-End & Front-End
--JaquelineNavarro:Front-End & UI
- QA - everyone/as needed
+-NikoleDixon: Scrum, DevOps, primary QA; Profile/Sign In, Bucket List, reviews and releases
+-izbethgarcia: Back-End and Front-End; Supabase, authentication, TanStack Query hooks, Create Trip
+-JaquelineNavarro: Front-End and UI; theme, shared components, Explore, Destination Details, Plan, Trip Details, accessibility
+All three members help with coding, testing, pull-request reviews, and QA as needed.
 
 ---
 
 ## Project Overview
 
-This project aims to develop a proof-of-concept mobile application using React Native and Expo. The goal is to demonstrate key functionality, technical feasibility, and user experience for a targeted use case.
-People often find travel destinations through different websites and social media platforms, but it can be difficult to keep track of places they want to visit and organize their ideas into an actual trip.
+People discover travel ideas across websites and social platforms but struggle to keep track of places they want to visit and turn those ideas into a trip. Our target users are travelers who want to discover destinations, save favorites in one place, and organize travel ideas into a plan. Sharing favorites with other users is a possible future feature, not part of this MVP.
+So, the purpose of this app is to help travelers find trip ideas, save them to a bucket list, and turn them into a real trip plan.
 
 ---
 
 ## Objectives
 
-- Develop a mobile app with core features to solve a specific problem or fulfill a user need. Our app will allow users to discover travel destinations, save their favorite places in a bucket list, and organize their travel ideas into personalized trip plans.
+- Develop a functional mobile proof of concept that helps travelers discover destinations, save favorites in a personal bucket list, and organize destinations into trips.
+- Provide a simple, accessible user experience with clear navigation, reusable components, and consistent Light/Dark Mode styling.
+- Demonstrate the mobile development skills learned in DEV272 through remote data, validated forms, navigation, testing, and team collaboration.
+- Deliver an app that can be demonstrated reliably at the end of the four development sprints.
 
 
 ### Required Features
 
 - Navigation: Expo Router will be used with tab navigation for Explore, Bucket List, Plan, and Profile, and stack navigation for Destination Details and Trip Details. Dynamic routes will display details for individual destinations and trips.
-- 6 Screens
+- 7 Screens
   -Explore
     -Destination details
   -Bucket list
   -Plan
+    -Create trip
     -Trip details
   -Profile
+    -Sign up 
+    -Sign in 
 - 2 Forms with validation
-  - Sign in
-    - validate email. 
-    - validate password.
-  - Plan trip 
+  - Authentication
+    - Sign in (Validate name, validate email and validate password)
+    - Sign up (Validate email and password)
+  - Create trip
     - validate the trip name.
     - validate the destination.
-- Remote data storage: Supabase will be used for user authentication and to store user profiles, travel     destinations, bucket list items, and trip planning information.
-- Data fetching: TanStack Query will be used to fetch, cache, and update travel destinations, bucket list
-  items, and trip information from Supabase.
+    - start/end dates
+    - optional notes
+- Remote data storage: Use Supabase Auth plus five application tables (destinations, profiles, bucket_items, trips, trip_destinations).
+- Data fetching: TanStack Query will be used to fetch, cache, destinations, bucket items, and trips and to manage save/remove/create operations.
 - Local persistence: AsyncStorage will be used to save the user's light or dark mode preference.
 - Advanced feature: Search & Filter. Users will be able to search for destinations by name and filter them by category, such as beaches, mountains, or cities.
-- Testing and quality tools: Jest and React Native Testing Library will be used for testing. ESLint, Prettier, and Husky will help maintain code quality.
-- Validate app viability through prototyping and testing.
-- Demonstrate understanding of mobile development principles, project management, and teamwork.
+- Testing and quality tools: Use Jest, React Native Testing Library, ESLint, Prettier, Husky, and reviewed pull requests. Target at least 12 passing automated tests with at least three written by each team member.
+- Accesibility: Check color contrast against WCAG AA guidance.
 
 ---
 
@@ -54,10 +60,10 @@ People often find travel destinations through different websites and social medi
 
 **In Scope:**
 
-- Explore: Users can discover travel destinations, search by name, and filter by destination type.
-- Bucket List: the user will save trip ideas.
-- Profile: this will be a log in screen.
-- Plan Trip: start planning a new trip with data provided by the user
+- Explore: Browse manually seeded destinations; search by name and filter by category.
+- Bucket List: Save and remove destinations in the signed-in user's personal list; show an empty state.
+- Profile: Sign In, Sign Up, Sign Out, and Light/Dark Mode toggle. Authentication uses Supabase Auth.
+- Plan Trip: Create a trip with title, dates, and optional notes; add saved destinations to a trip; view the trip in Plan and Trip Details.
 
 **Out of Scope:**
 
@@ -73,145 +79,149 @@ People often find travel destinations through different websites and social medi
 
 ## Week-by-Week Plan
 
-### Week 1: Planning and Setup
+### Week 1: Planning and Setup (Sprint 0) — Nov 3–10
 
-- Define project scope and goals.
-- Research target users and competitors.
+- Define the project problem, target users, objectives, and MVP scope.
+- Identify required features and out-of-scope functionality.
 - Assign team roles and responsibilities.
-- Create wireframes and user flow diagrams.
-- Set up project repository (GitHub).
-- Choose tech stack, libraries, and tools (course stack: Expo Router, Supabase, TanStack Query, AsyncStorage; list anything extra and why).
-- Verify that ESLint, Prettier, Jest, and Husky are correctly configured in the project repository.
+- Set up the GitHub repository, protected branches, and GitHub Projects board.
+- Choose the technology stack and development tools.
+- Create and review wireframes for the main screens and UI states.
+- Create a user flow diagram showing tab navigation, stack navigation, and dynamic routes.
+- Define the five Supabase tables and organize tasks for the four development sprints.
+- Complete and review the Software Development Plan.
 
 **Deliverables:**
 
-- Project proposal document
-- Wireframes and flowcharts
-- Initial GitHub repository with project structure
+- GitHub repository and project board.
+- Completed Software Development Plan.
+- Wireframes covering the approved screens and UI states.
+- User flow diagram.
+- MVP scope, database design, sprint schedule, and assigned responsibilities.
 
-### Week 2: Navigation and UI
+### Week 2: Navigation and State (Sprint 1) — Nov 11–17
 
-- Set up navigation using Expo Router (tabs and stack).
-- Create the main screens: Explore, Bucket List, Plan, and Profile.
-- Create a Destination Details screen using a dynamic route.
-- Create a basic Trip Details screen using a dynamic route.
-- Create a reusable component to display destinations.
-- Add colors and styles based on our wireframes.
-- Set up basic shared state for the app.
-
-**Deliverables:**
-
-- Working navigation between screens 
-- Main screens created (Explore, Bucket List, Plan, and Profile)
-- Destination Details screen and reusable destination card component
-
-### Week 3: Data & Authentication
-
-- Set up Supabase for our app.
-- Create tables to store destinations and saved places.
-- Connect the Explore screen to Supabase using TanStack Query.
-- Set up user authentication with Supabase Auth.
-- Allow users to save destinations to their Bucket List.
+- ND: Configure Expo Router with four tabs and the required stack routes.
+- ND: Set up Jest and React Native Testing Library and write three initial tests.
+- LG: Configure Supabase, TanStack Query, authentication state, and environment variables.
+- LG: Create the five Supabase tables, configure authentication and Row Level Security, and seed 20–30 destinations.
+- JN: Implement light and dark themes, AsyncStorage persistence, and a reusable accessible Button component.
+- JN: Build DestinationCard, EmptyState, LoadingSkeleton, and ErrorMessage components.
 
 **Deliverables:**
 
-- Supabase database connected to the app. – who?
-- Explore screen displaying destinations from Supabase. – who?
-- Users can save destinations to their Bucket List. - who?
-- Basic Sign In form with validation. – who?
+- ND: Working navigation and three passing tests.
+- LG: Supabase connection, authentication setup, five database tables, and seeded destination data.
+- JN: Theme system and reusable UI components.
 
-### Week 4: Trip Planning
+### Week 3: Core Features and Remote Data (Sprint 2) — Nov 18–24
 
-- Create the plan trip form (trip name, destinations, travel dates).
-- Add form validations using react hook form and zod.
-- Save trip information to Supabase.
-- Display saved trip information on the Trip Details screen.
-- Test the plan trip form.
-- Add search by name and category filters to the Explore screen.
-- Note: Thanksgiving (Nov 26–27) falls in this sprint. Plan lighter and decide who is available.
+- ND: Implement Sign In, Sign Up, and Profile with form validation and error messages.
+- ND: Build the Bucket List screen with saved destinations, an empty state, and remove functionality.
+- LG: Implement TanStack Query hooks for destinations, destination details, and bucket list items.
+- LG: Create mutations to save and remove destinations and handle authentication requirements.
+- JN: Build Explore using FlatList, search by name, category filters, and loading states.
+- JN: Build Destination Details using a dynamic route and Supabase data.
 
 **Deliverables:**
 
-- Plan Trip form with validation. - who?
-- Trip information saved and displayed. - who?
-- Search & Filter working on the Explore screen. - who?
+- ND: Working Profile authentication and Bucket List screens.
+- LG: Functional destination and bucket list queries and mutations.
+- JN: Explore and Destination Details screens with remote data.
 
-### Week 5: Testing & Integration
+### Week 4: Advanced Features and Screens (Sprint 3) — Nov 25–Dec 1
 
-- Connect and review all main app features.
-- Use AsyncStorage to save the user's light or dark mode preference.
-- Test the screens and forms using jest and react native testing library.
-- Check navigation, forms, and Supabase integration.
-- Fix bugs and improve accessibility.
-- Check that the navigation and Supabase work correctly. 
-- Fix bugs and check accesibility. 
-
-**Deliverables:**
-
-- The main app features is connected and working. - who?
-- Theme preference saved locally. - who?
-- Automated tests and quality checks passing. - who?
-- Bug fixes and accesibility - who?
-
-### Week 6: Presentation
-
-- Fix outstanding bugs.
-- Polish UI and user experience.
-- Create project documentation.
-- Prepare a final demo and presentation.
+- LG: Create trip-related TanStack Query hooks and mutations.
+- LG: Build the Create Trip form using React Hook Form and Zod, validating title, travel dates, and notes as appropriate.
+- LG: Save trips to Supabase and support adding multiple destinations.
+- JN: Build the Plan screen with saved trips and an empty state.
+- JN: Build Trip Details with dynamic routing and destination management.
+- ND: Add Sign Out and the theme toggle to Profile.
+- ND: Implement error and retry states and write four automated tests.
 
 **Deliverables:**
 
-- Fully functional proof-of-concept app
-- README with setup instructions
-- Team presentation/demonstration
+- LG: Validated Create Trip form and working trip database operations.
+- JN: Plan and Trip Details screens supporting multiple destinations.
+- ND: Sign Out, theme controls, error/retry handling, and four tests.
+
+### Week 5: Testing, Polish and Presentation (Sprint 4) — Dec 2–8
+
+- JN: Test Explore at 200% text size on a real phone, perform accessibility checks, and write three component tests.
+- JN: Fix accessibility issues involving touch targets, color contrast, and screen reader labels.
+- LG: Optimize FlatList, TanStack Query settings, and image loading.
+- LG: Write four tests covering search, filters, and Bucket List mutations.
+- ND: Write four tests covering Create Trip and Plan, and verify the complete user flow.
+- ND: Finalize the README, demo build, and presentation script.
+
+All team members: Fix remaining bugs, review the application, and practice the final demonstration.
+
+**Deliverables:**
+
+- JN: Accessibility audit, verified text scaling, and passing component tests.
+- LG: Performance improvements, passing data-related tests, and integration fixes.
+- ND: Passing trip-related tests, final documentation, and demo preparation.
+
+All team members: Completed proof-of-concept application ready for presentation.
 
 ---
 
 ## Success Criteria
 
-- The user can navigate between the main screens without errors.
-- The Explore screen displays destinations from Supabase.
-- The user can sign in and save destinations to the bucket list.
-- The user can create a trip and view their saved trip details.
-- The app passes the required tests and has no major bugs.
+- Final agreed wireframe screens/states implemented.
+- Explore fetches remote data and filters correctly.
+- Authentication form validation works.
+- Bucket List persists.
+- Create Trip validates and saves.
+- Automated tests pass.
+- Accessibility checks pass
 
 **How will you measure success for each criterion?**  
-We will measure success by testing navigation between all main screens and checking that destinations load correctly from Supabase. We will also test if users can sign in, save destinations to their Bucket List, and create trips. We will check that trip information is saved and displayed correctly. Finally, we will run automated tests and check for major bugs.
+- Screen and State Completion: Walk through every approved screen and state against the running app.
+- Explore Performance: Initial results load in under 2 seconds in 4 out of 5 Wi-Fi trials, and all 10 search/filter checks pass.
+- Form Validation: Invalid inputs display errors, and no invalid submission reaches Supabase in 10 negative tests.
+- Bucket List Persistence: Saved destinations remain in the Bucket List after restarting the app in 5 out of 5 trials.
+- Trip Creation: Invalid dates are rejected, and valid trips appear in the Plan screen in 5 out of 5 trials.
+- Automated Testing: At least 12 tests pass, with at least 3 tests authored by each team member and zero failures.
+- Accessibility: All checked touch targets are at least 48 × 48, and the Explore screen has no clipped text at 200% text size on one real phone.
 
 **How will you assign ownership?**
-We will assign one team member to each success criterion based on their role and responsibilities. All team members will help with testing and reviewing the app to make sure everything works correctly. We will discuss and confirm ownership during our team meetings.
+Each team member will be responsible for verifying the success criteria related to their assigned tasks. Nikole Dixon will lead the screen and state completion review, Bucket List persistence testing, and overall automated test verification. Lizbeth Garcia will be responsible for form validation, Supabase integration, and verifying that trip information is correctly saved and retrieved. Jaqueline Navarro will be responsible for Explore performance, search and filter functionality, and accessibility checks, including touch target sizes and text scaling. All three team members will contribute at least three automated tests and collaborate on final testing, bug fixes, and quality assurance to ensure the app meets the agreed success criteria.
 ---
 
 ## Tools & Libraries
 
 - **React Native / Expo** – Mobile development
 - **GitHub Projects** – Task management
-- React Native / Expo – Mobile app development.
-- TypeScript.  
-- Expo Router. - To navegate between screens.
-- Supabase – To use it as a remote database and authentication.
-- TanStack Query – to do the data fetching and caching.
-- React Hook Form – We will us this one for form management.
-- Zod – To validate all the sections of our forms.
-- AsyncStorage – To save locally the preference of the user light mode or dark mode.
-- Jest – To automate the testing.
-- React Native Testing Library – Component to testing.
-- ESLint – To check the quality of the code.
-- Prettier – To format all the code.
-- Husky – Check the code before sending to git. 
-- GitHub Projects – For task management.
+- **TypeScript** 
+- **Expo Router** - To navegate between screens.
+- **Supabase** – To use it as a remote database and authentication.
+- **TanStack Query** – to do the data fetching and caching.
+- **React Hook Form** – We will us this one for form management.
+- **Zod** – To validate all the sections of our forms.
+- **AsyncStorage** – To save locally the preference of the user light mode or dark mode.
+- **Jest** – To automate the testing.
+- **React Native Testing Library** – Component to testing.
+- **ESLint** – To check the quality of the code.
+- **Prettier** – To format all the code.
+- **Husky**– Check the code before sending to git. 
 ---
 
 ## Data
 
 |Table or API Resource|               Fields                          | Screens That Use It |
 |---------------------|-----------------------------------------------|---------------------|
-| destinations        |id (UUID), name (text), category (text), description (text), image_url (text)     |    Explore, Destination Details  |
-| bucket_list        |id (UUID), user_id (UUID), destination_id (UUID)  |    Bucket List, Destination Details  |
-| trips        |id (UUID), user_id (UUID), name (text), destination_id (UUID), start_date (date), end_date (date)  |    Plan, Trip Details  |
+| destinations        |id, name, country, region, category, description, image_url, best_season, cost_level, created_at |    Explore, Destination Details  |
+| profiles     |id (matches Auth user ID), display_name, theme, created_at    |    Profile  |
+| bucket_items       |	id, user_id, destination_id, created_at  |    Bucket List, Destination Details  |
+| trips        |id, user_id, title, start_date, end_date, notes, created_at  |    Plan, Trip Details  |
+| trip_destinations  |id, trip_id, destination_id, sort_order |  Create Trip, Trip Details  |
 | Supabase Auth       |id (UUID), email (text)  |    Profile and sign in  |
 | AsyncStorage       |theme (string: light or dark)  |    Theme settings across the app  |
+
+
+
+
 ---
 
 ## Sprint Planning & Team Meetings
@@ -270,9 +280,7 @@ All team members will help with coding, testing, and reviewing the app when need
 - **Dev Branch:** Ongoing development
   - https://github.com/NikoleDixon/DEV272-TravelApp/tree/develop
 
-- **Feature Branches:** One per task/feature
-Each team member will create a new branch for each task or feature. We will not work directly on main or develop.
+- **Feature Branches:** One per issue/feature, created from develop (e.g. feature/software-development-plan-6 or feature/wireframes-7). Do not commit directly to main or develop.
 
-- **Pull Requests:** Code reviews and testing before merge
- When a task is finished, we will create a Pull Request to merge the changes into develop. Another team member will review the code, and the required tests and checks must pass before merging.
+- **Pull Requests:** Open a PR into develop; another teammate reviews; tests/lint and agreed checks pass before merging. Protect main and develop according to repository settings.
 
