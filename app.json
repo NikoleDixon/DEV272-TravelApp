@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TravelApp",
-    "slug": "TravelApp",
+    "name": "Roovia",
+    "slug": "Roovia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
