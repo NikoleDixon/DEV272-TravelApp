@@ -227,10 +227,10 @@ Each team member will be responsible for verifying the success criteria related 
 ## Sprint Planning & Team Meetings
 
 - **Sprint Duration:** 1 Week
-- **Kickoff Meeting:** Every Monday at 11:00am – Plan sprint goals, assign tasks, review feedback from previous week.
+- **Kickoff Meeting:** Every Wendesday at 11:00am – Plan sprint goals, assign tasks, review feedback from previous week.
 - **Stand-Up Meetings:** Every Monday and Wednesday at 11:00 AM. Meetings are scheduled for 30 minutes but can be extended if needed. We will share our progress, discuss any problems, and ask for help when necessary.
 Our stand-up meetings will be held online through Microsoft Teams. We will also use our Teams group chat to share updates, ask questions, and request help between meetings. We have also exchanged phone numbers and created an iMessage group chat for emergencies or urgent situations.
-- **Midweek Sync:** Every Wednesday at 11:00 AM. We will review our progress, discuss any blockers, and work together to solve problems.
+- **Midweek Sync:** Every Monday at 11:00 AM. We will review our progress, discuss any blockers, and work together to solve problems.
 - **Sprint Review & Retrospective:** During our Monday meeting, we will review the previous sprint, discuss what went well, what could be improved, and plan the next sprint.
 
 **Task Management:**  
