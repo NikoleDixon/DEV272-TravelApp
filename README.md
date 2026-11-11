@@ -1,4 +1,9 @@
-# Roovia ✈️
+# Team: Nikole Dixon, Lizbeth Garcia, and Jaqueline Navarro
+## User Names: NikoleDixon, izbethgarcia, and JaquelineNavarro
+
+# The problem, target users, and one-sentence purpose are written down.
+   ## The problem
+      People often find travel destinations through different websites and social media platforms, but it can be difficult to keep track of places they want to visit and organize their ideas into an actual trip.
 
 **Discover. Save. Explore.**
 
