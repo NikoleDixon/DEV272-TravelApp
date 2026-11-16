@@ -1,21 +1,29 @@
+import { useColorMode } from "@/context/ColorMode";
 import { StyleSheet, Text, View } from "react-native";
+import { Button } from "../components/Button";
+import { colors } from "../design/themes";
 
 // This is the home screen (route "/").
 // Week 1: change the two lines marked 👇, run the app, commit, push.
 export default function Index() {
-  // 👇 Week 1: replace with your name
-  const studentName = "Your Name";
-  // 👇 Week 1: replace with something you want to build this quarter
-  const appIdea = "an app idea I have";
+  const { colorMode, setColorMode } = useColorMode();
+  const theme = colors[colorMode];
+  // // 👇 Week 1: replace with your name
+  // const studentName = "Your Name";
+  // // 👇 Week 1: replace with something you want to build this quarter
+  // const appIdea = "an app idea I have";
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>DEV 272 · Mobile Application Development</Text>
-      <Text style={styles.body}>Hello, I am {studentName}.</Text>
-      <Text style={styles.body}>This quarter I want to build {appIdea}.</Text>
-      <Text style={styles.hint}>
-        Edit src/app/index.tsx to change this screen.
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.body, { color: theme.mainText }]}>
+        Testing the colors
       </Text>
+      <Button
+        title="Test color mode"
+        onPress={() =>
+          setColorMode(colorMode === "lightMode" ? "darkMode" : "lightMode")
+        }
+      />
     </View>
   );
 }
