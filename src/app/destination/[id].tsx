@@ -1,20 +1,22 @@
 // Destination Page: This is for the details of the destination that is selected
 
-import { useColorMode } from "@/hooks/useColorMode";
+import { useColorMode } from "@/context/ColorMode";
+import { colors } from "@/design/themes";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Button, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DestinationPage() {
-  const c = useColorMode();
+  const { colorMode, setColorMode } = useColorMode();
+  const theme = colors[colorMode];
   const insets = useSafeAreaInsets();
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: c.background, paddingTop: insets.top },
+        { backgroundColor: theme.background, paddingTop: insets.top },
       ]}
     >
       <Stack.Screen options={{ headerShown: false }} />
@@ -26,9 +28,15 @@ export default function DestinationPage() {
           accessibilityLabel="Go back"
           style={styles.backButton}
         >
-          <Ionicons name="chevron-back" size={26} color={c.mainText} />
+          <Ionicons name="chevron-back" size={26} color={theme.mainText} />
         </Pressable>
       </View>
+      <Button
+        title="Change Color Mode"
+        onPress={() =>
+          setColorMode(colorMode === "lightMode" ? "darkMode" : "lightMode")
+        }
+      />
     </View>
   );
 }

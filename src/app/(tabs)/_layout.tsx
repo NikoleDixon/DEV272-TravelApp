@@ -1,15 +1,16 @@
-import ColorModeProvider from "@/components/ColorModeProvider";
-import { useColorMode } from "@/hooks/useColorMode";
+import { useColorMode } from "@/context/ColorMode";
+import { colors } from "@/design/themes";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 
 export default function TabLayout() {
-  const c = useColorMode();
+  const { colorMode, setColorMode } = useColorMode();
+  const theme = colors[colorMode];
 
   return (
-    <Tabs screenOptions={{ headerRight: () => <ColorModeProvider /> }}>
+    <Tabs>
       {/* Explore Tab/Home Screen */}
       <Tabs.Screen
         name="index"
@@ -27,11 +28,11 @@ export default function TabLayout() {
               <Image
                 source={require("@/assets/images/roovialogo.svg")}
                 style={{ width: 30, height: 30 }}
-                tintColor={c.btnBackground}
+                tintColor={theme.btnBackground}
               />
               <Text
                 style={{
-                  color: c.mainText,
+                  color: theme.mainText,
                   fontSize: 14,
                   fontWeight: "600",
                   padding: 10,
@@ -39,15 +40,23 @@ export default function TabLayout() {
               >
                 Roovia
               </Text>
+              <Button
+                title="Change Color Mode"
+                onPress={() =>
+                  setColorMode(
+                    colorMode === "lightMode" ? "darkMode" : "lightMode",
+                  )
+                }
+              />
             </View>
           ),
           headerTitleAlign: "left",
-          headerTitleStyle: { color: c.mainText },
-          headerStyle: { backgroundColor: c.elementBackground },
-          tabBarActiveTintColor: c.background,
-          tabBarActiveBackgroundColor: c.activeTabColor,
-          tabBarInactiveBackgroundColor: c.elementBackground,
-          tabBarInactiveTintColor: c.secondaryText,
+          headerTitleStyle: { color: theme.mainText },
+          headerStyle: { backgroundColor: theme.elementBackground },
+          tabBarActiveTintColor: theme.background,
+          tabBarActiveBackgroundColor: theme.activeTabColor,
+          tabBarInactiveBackgroundColor: theme.elementBackground,
+          tabBarInactiveTintColor: theme.secondaryText,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="compass-outline" color={color} size={size} />
           ),
@@ -71,11 +80,11 @@ export default function TabLayout() {
               <Image
                 source={require("@/assets/images/roovialogo.svg")}
                 style={{ width: 30, height: 30 }}
-                tintColor={c.btnBackground}
+                tintColor={theme.btnBackground}
               />
               <Text
                 style={{
-                  color: c.mainText,
+                  color: theme.mainText,
                   fontSize: 14,
                   fontWeight: "600",
                   padding: 10,
@@ -83,15 +92,23 @@ export default function TabLayout() {
               >
                 Roovia
               </Text>
+              <Button
+                title="Change Color Mode"
+                onPress={() =>
+                  setColorMode(
+                    colorMode === "lightMode" ? "darkMode" : "lightMode",
+                  )
+                }
+              />
             </View>
           ),
           headerTitleAlign: "left",
-          headerTitleStyle: { color: c.mainText },
-          headerStyle: { backgroundColor: c.elementBackground },
-          tabBarActiveTintColor: c.background,
-          tabBarActiveBackgroundColor: c.activeTabColor,
-          tabBarInactiveBackgroundColor: c.elementBackground,
-          tabBarInactiveTintColor: c.secondaryText,
+          headerTitleStyle: { color: theme.mainText },
+          headerStyle: { backgroundColor: theme.elementBackground },
+          tabBarActiveTintColor: theme.background,
+          tabBarActiveBackgroundColor: theme.activeTabColor,
+          tabBarInactiveBackgroundColor: theme.elementBackground,
+          tabBarInactiveTintColor: theme.secondaryText,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="heart-outline" color={color} size={size} />
           ),
@@ -115,11 +132,11 @@ export default function TabLayout() {
               <Image
                 source={require("@/assets/images/roovialogo.svg")}
                 style={{ width: 30, height: 30 }}
-                tintColor={c.btnBackground}
+                tintColor={theme.btnBackground}
               />
               <Text
                 style={{
-                  color: c.mainText,
+                  color: theme.mainText,
                   fontSize: 14,
                   fontWeight: "600",
                   padding: 10,
@@ -127,15 +144,23 @@ export default function TabLayout() {
               >
                 Roovia
               </Text>
+              <Button
+                title="Change Color Mode"
+                onPress={() =>
+                  setColorMode(
+                    colorMode === "lightMode" ? "darkMode" : "lightMode",
+                  )
+                }
+              />
             </View>
           ),
           headerTitleAlign: "left",
-          headerTitleStyle: { color: c.mainText },
-          headerStyle: { backgroundColor: c.elementBackground },
-          tabBarActiveTintColor: c.background,
-          tabBarActiveBackgroundColor: c.activeTabColor,
-          tabBarInactiveBackgroundColor: c.elementBackground,
-          tabBarInactiveTintColor: c.secondaryText,
+          headerTitleStyle: { color: theme.mainText },
+          headerStyle: { backgroundColor: theme.elementBackground },
+          tabBarActiveTintColor: theme.background,
+          tabBarActiveBackgroundColor: theme.activeTabColor,
+          tabBarInactiveBackgroundColor: theme.elementBackground,
+          tabBarInactiveTintColor: theme.secondaryText,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar-outline" color={color} size={size} />
           ),
@@ -159,11 +184,11 @@ export default function TabLayout() {
               <Image
                 source={require("@/assets/images/roovialogo.svg")}
                 style={{ width: 30, height: 30 }}
-                tintColor={c.btnBackground}
+                tintColor={theme.btnBackground}
               />
               <Text
                 style={{
-                  color: c.mainText,
+                  color: theme.mainText,
                   fontSize: 14,
                   fontWeight: "600",
                   padding: 10,
@@ -171,15 +196,23 @@ export default function TabLayout() {
               >
                 Roovia
               </Text>
+              <Button
+                title="Change Color Mode"
+                onPress={() =>
+                  setColorMode(
+                    colorMode === "lightMode" ? "darkMode" : "lightMode",
+                  )
+                }
+              />
             </View>
           ),
           headerTitleAlign: "left",
-          headerTitleStyle: { color: c.mainText },
-          headerStyle: { backgroundColor: c.elementBackground },
-          tabBarActiveTintColor: c.background,
-          tabBarActiveBackgroundColor: c.activeTabColor,
-          tabBarInactiveBackgroundColor: c.elementBackground,
-          tabBarInactiveTintColor: c.secondaryText,
+          headerTitleStyle: { color: theme.mainText },
+          headerStyle: { backgroundColor: theme.elementBackground },
+          tabBarActiveTintColor: theme.background,
+          tabBarActiveBackgroundColor: theme.activeTabColor,
+          tabBarInactiveBackgroundColor: theme.elementBackground,
+          tabBarInactiveTintColor: theme.secondaryText,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" color={color} size={size} />
           ),
