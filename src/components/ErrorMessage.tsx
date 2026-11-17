@@ -1,23 +1,20 @@
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { useColorMode } from "../context/ColorMode";
+import { colors } from "../design/themes";
 
 type ErrorMessageProps = {
   title: string;
   message: string;
-  onRetry: () => void;
 };
-
-export default function ErrorMessage({
-  title,
-  message,
-  onRetry,
-}: ErrorMessageProps) {
+export default function ErrorMessage({ title, message }: ErrorMessageProps) {
+  const { colorMode } = useColorMode();
+  const theme = colors[colorMode];
   return (
     <View
       style={{
         alignItems: "center",
         justifyContent: "center",
         padding: 24,
-
         gap: 12,
       }}
     >
@@ -25,6 +22,7 @@ export default function ErrorMessage({
         style={{
           fontSize: 22,
           fontWeight: "bold",
+          color: theme.errorTextColor,
           textAlign: "center",
         }}
       >
@@ -33,29 +31,13 @@ export default function ErrorMessage({
       <Text
         style={{
           fontSize: 16,
+          color: theme.secondaryText,
           textAlign: "center",
           lineHeight: 24,
         }}
       >
         {message}
       </Text>
-      <Pressable
-        onPress={onRetry}
-        accessibilityRole="button"
-        accessibilityLabel="Try again"
-        style={{
-          paddingHorizontal: 24,
-          paddingVertical: 12,
-          borderRadius: 8,
-          minHeight: 48,
-          minWidth: 120,
-          alignItems: "center",
-          justifyContent: "center",
-          borderWidth: 1,
-        }}
-      >
-        <Text>Try Again</Text>
-      </Pressable>
     </View>
   );
 }

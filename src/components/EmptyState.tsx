@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
+import { useColorMode } from "../context/ColorMode";
+import { colors } from "../design/themes";
 
 type EmptyStateProps = {
   title: string;
@@ -16,6 +18,8 @@ export default function EmptyState({
   onButtonPress,
   icon,
 }: EmptyStateProps) {
+  const { colorMode } = useColorMode();
+  const theme = colors[colorMode];
   return (
     <View
       style={{
@@ -31,6 +35,7 @@ export default function EmptyState({
           fontWeight: "bold",
           textAlign: "center",
           marginBottom: 8,
+          color: theme.mainText,
         }}
       >
         {title}
@@ -41,6 +46,7 @@ export default function EmptyState({
           textAlign: "center",
           marginBottom: 20,
           lineHeight: 24,
+          color: theme.secondaryText,
         }}
       >
         {message}
@@ -49,6 +55,15 @@ export default function EmptyState({
         onPress={onButtonPress}
         accessibilityRole="button"
         accessibilityLabel={buttonText}
+        style={{
+          backgroundColor: theme.btnBackground,
+          padding: 12,
+          borderRadius: 8,
+          minHeight: 48,
+          minWidth: 48,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         <Text>{buttonText}</Text>
       </Pressable>
