@@ -1,8 +1,7 @@
-
-import { View } from "react-native";
 import { Button } from "@/components/Button";
 import { useColorMode } from "@/context/ColorMode";
 import { colors } from "@/design/themes";
+import { View } from "react-native";
 
 export default function ButtonTest() {
   const { colorMode, setColorMode } = useColorMode();
