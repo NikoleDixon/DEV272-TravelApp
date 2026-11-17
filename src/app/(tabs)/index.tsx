@@ -1,26 +1,51 @@
-// Explore Tab: This is the starting/home page. It contains all the places that you can explore.
+import { useRouter } from "expo-router";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useDestinations } from "../../hooks/useDestinations";
 
-import { Link } from "expo-router";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+export default function Index() {
+  const router = useRouter();
+  const { data, isLoading, isError } = useDestinations();
 
-// Sample data: each destination has an id and a name
-const DESTINATIONS = [
-  { id: "1", name: "Maui, Hawaii" },
-  { id: "2", name: "Kyoto, Japan" },
-  { id: "3", name: "Paris, France" },
-  { id: "4", name: "Cape Town, South Africa" },
-];
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading destinations...</Text>
+      </View>
+    );
+  }
 
-export default function ExploreTab() {
+  if (isError) {
+    return (
+      <View style={styles.container}>
+        <Text>Unable to load destinations. Please try again.</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Explore Destinations</Text>
+
       <FlatList
-        data={DESTINATIONS}
+        data={data ?? []}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={<Text>No destinations found.</Text>}
         renderItem={({ item }) => (
-          <Link href={`/destination/${item.id}`} style={styles.link}>
+          <Pressable
+            style={styles.destination}
+            onPress={() =>
+              router.push({
+                pathname: "/destination/[id]",
+                params: { id: item.id },
+              })
+            }
+          >
             <Text style={styles.name}>{item.name}</Text>
-          </Link>
+            <Text>
+              {item.region}, {item.country}
+            </Text>
+            <Text>{item.category}</Text>
+          </Pressable>
         )}
       />
     </View>
@@ -28,10 +53,23 @@ export default function ExploreTab() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  link: {
-    paddingVertical: 14, // makes the tap area at least 48 tall
-    minHeight: 48,
+  container: {
+    flex: 1,
+    padding: 20,
   },
-  name: { fontSize: 18 },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  destination: {
+    padding: 16,
+    marginBottom: 12,
+    borderRadius: 10,
+    backgroundColor: "#f5e9e9",
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
 });

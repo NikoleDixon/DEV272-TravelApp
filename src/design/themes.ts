@@ -1,5 +1,3 @@
-// Purpose: The colors used for light and dark mode on all screens.
-
 export const colors = {
   lightMode: {
     background: "#CFE3DC",
@@ -48,5 +46,3 @@ export const fontSize = {
   sectionTitle: 24,
   screenTitle: 32,
 };
-
-export type Palette = typeof colors.lightMode;

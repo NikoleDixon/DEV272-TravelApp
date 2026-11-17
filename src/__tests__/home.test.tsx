@@ -1,11 +1,23 @@
-import { render, screen } from "@testing-library/react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render } from "@testing-library/react-native";
 
 import Index from "@/app/(tabs)/index";
 
-// Test files live outside src/app: every file in app/ is treated as a route.
-// This starter test proves Jest works. Replace it when you replace the screen.
-test("home screen renders destinations", async () => {
-  await render(<Index />);
+test("Explore screen shows the destinations", async () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
-  expect(screen.getByText("Maui, Hawaii")).toBeOnTheScreen();
+  const { findByText } = await render(
+    <QueryClientProvider client={queryClient}>
+      <Index />
+    </QueryClientProvider>,
+  );
+
+  expect(await findByText("Explore Destinations")).toBeOnTheScreen();
+  expect(await findByText("Cancun")).toBeOnTheScreen();
 });
