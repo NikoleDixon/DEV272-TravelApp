@@ -1,4 +1,4 @@
-Roovia ✈️
+# Roovia ✈️
 
 **Discover. Save. Explore.**
 
@@ -6,11 +6,48 @@ Roovia is a travel app that helps people discover new destinations, save places 
 
 ## Team Members
 
-| **Team Member** | **GitHub Username** | **Primary Role** | **Secondary Role** |
+| **Team Member** | **GitHub Username** | **Primary Role** | **Secondary Roles** |
 | --- | --- | --- | --- |
 | Nikole Dixon | NikoleDixon | Project Management / Scrum Master | DevOps and QA |
 | Jaqueline Navarro | JaquelineNavarro | Front-End Development | UI Design and QA |
 | Lizbeth Garcia | izbethgarcia | Back-End Development | Front-End Development |
+
+## Screens
+
+| Screen | What it does | Route type | File | Wireframes |
+| --- | --- | --- | --- | --- |
+| Explore | List of destinations, search, filter by category | Tab | `app/(tabs)/index.tsx`| 1, 9, 12 |
+| Destination details | Shows more information about one destination | Dynamic | `app/destination/[id].tsx` | 2 |
+| Bucket list | Shows saved destinations | Tab | `app/(tabs)/bucket-list.tsx` | 3, 4 |
+| Plan | Shows your trips with button to add a new trip | Tab | `app/(tabs)/plan.tsx` | 5 |
+| Create trip | Form to make a new trip, saves to Plan tab | Stack | `app/trip/new.tsx` | 6, 7 |
+| Trip details | Shows information about selected trip | Dynamic | `app/trip/[id].tsx` | 8 |
+| Profile / Sign in | Sign in, Sign up, and toggle light/dark mode | Tab | `app/(tabs)/profile.tsx` | 10, 11 |
+
+## Features
+
+### Discover and Explore
+- **Explore destinations:** Browse a list of travel destinations.
+- **Search and filter:** Search by name and filter by category to find places faster. (🚧 in work)
+- **Destination details:** Open any destination to see more information on its own page.
+
+### Save and Plan
+- **Bucket list:** Save destinations you want to visit and view them in one place. (🚧 in work)
+- **Plan trips:** Create a trip with a form and see all your trips in the Plan tab. (🚧 in work)
+- **Trip details:** Open a trip to review its information. (in work)
+
+### Account
+- **Sign in and profile:** Create an account and sign in using Supabase authentication. (🚧 in work)
+
+### Usability and Accessibility
+- **Helpful messages:** Loading states, empty states, and form error messages tell the user what is happening. (🚧 in work)
+- **Accessible design:** Colors meet WCAG 2.2 AA, and all touch targets are at least 48 x 48. (🚧 in work)
+- **Large text support:** The Explore screen reflows correctly at 200% text size. (🚧 in work)
+
+### Built With
+- React Native and Expo Router
+- FlatList for scrolling lists
+- Supabase for authentication and remote data
 
 ## Getting Started
 
@@ -69,6 +106,27 @@ pnpm start
 ```
 
 Expo will start the development server. Follow the instructions in the terminal to open the app in an emulator or on your mobile device.
+
+## Shared UI Components
+ 
+- **Button:** A reusable button used for different actions in the app. It supports light and dark modes and keeps the same style across screens.
+ - **DestinationCard:** Shows a destination's image, name, and basic information. It helps users explore destinations and open the Destination Details screen.
+- **EmptyState:** Shows a message when there is no content to display, like an empty Bucket List or no search results.
+- **LoadingSkeleton:** Shows placeholder content while the app is loading information, so users know the content is coming.
+- **ErrorMessage:** Shows a message when something goes wrong and can give users an option to try again.
+
+## Shared State and Dummy Data
+
+The app uses shared TypeScript types and seeded destination data for development.
+
+- **Types:** Shared models (Destination, BucketItem, and Trip) are located in src/types/.
+- **Seed Data:** Sample destination data is stored in src/data/destinations.ts.
+- **Mock API:** Destination data is currently retrieved through mock API functions in src/data/destination-api.ts.
+- **Data Hooks:** TanStack Query hooks and query keys are located in src/hooks/ and are used by screens to access destination data.
+
+## Supabase Integration
+In Sprint 2, the mock API functions will be replaced with Supabase database queries. The shared types and query hooks will be reused where possible, allowing the app to retrieve real destination data from Supabase instead of the local seeded data without requiring major changes to the screens.
+
 
 ## Git Workflow
 
