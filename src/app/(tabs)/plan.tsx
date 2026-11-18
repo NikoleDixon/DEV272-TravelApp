@@ -3,5 +3,7 @@
 import { Text } from "react-native";
 
 export default function PlanScreen() {
-  return <Text>Plan</Text>;
+  const tripCount: number = "three";
+
+  return <Text>Plan: {tripCount}</Text>;
 }
