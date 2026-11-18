@@ -76,8 +76,12 @@ jobs:
 
       # 7. Run the Jest tests. `--ci` makes Jest fail on a missing snapshot
       #    instead of quietly writing a new one.
+      #    The two `--reporters` flags matter: "default" keeps the normal Jest
+      #    output in the log, and "github-actions" adds a red annotation on the
+      #    failed test's line in the PR's Checks view. Lint and tsc get those
+      #    annotations from GitHub automatically; Jest needs this flag.
       - name: Test
-        run: pnpm test --ci
+        run: pnpm test --ci --reporters=default --reporters=github-actions
 
       # Optional: the pre-commit hook also runs `pnpm format:check` (Prettier).
       # It is left out because the request was lint, type check, and tests.
