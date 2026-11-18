@@ -10,6 +10,7 @@ type DestinationCardProps = {
   imageUrl: string;
   isSaved: boolean;
   onToggleSave: () => void;
+  onPress: () => void;
 };
 
 export default function DestinationCard({
@@ -19,11 +20,13 @@ export default function DestinationCard({
   imageUrl,
   isSaved,
   onToggleSave,
+  onPress,
 }: DestinationCardProps) {
   const { colorMode } = useColorMode();
   const theme = colors[colorMode];
   return (
-    <View
+    <Pressable
+      onPress={onPress}
       style={[
         styles.container,
         {
@@ -72,7 +75,7 @@ export default function DestinationCard({
           color={theme.errorTextColor}
         />
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 const styles = StyleSheet.create({

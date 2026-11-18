@@ -14,6 +14,7 @@ export default function TestCards() {
         imageUrl="https://amanda-wanders.com/wp-content/uploads/2022/11/Tulum-Travel-Guide-Cover.jpg"
         isSaved={isSaved}
         onToggleSave={() => setIsSaved(!isSaved)}
+        onPress={() => {}}
       />
     </View>
   );
