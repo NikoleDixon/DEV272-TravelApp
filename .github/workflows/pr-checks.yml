@@ -1,0 +1,86 @@
+# pr-checks.yml: runs lint, type check, and Jest tests on every pull request.
+#
+# Why this exists: the Husky pre-commit hook runs the same checks on your own
+# computer, and on a slower machine that can freeze a commit. GitHub runs them
+# here instead, so a teammate can commit and push quickly and still get the same
+# safety net before code reaches `develop` or `main`.
+#
+# Where to see the result: open the pull request and look at the "Checks"
+# section near the bottom (or the Actions tab). A green check means all three
+# passed. A red X means one failed; click "Details" to read the error output.
+#
+# Run the same commands locally to reproduce a failure:
+#   pnpm lint
+#   pnpm exec tsc --noEmit
+#   pnpm test
+name: PR checks
+
+on:
+  # Runs when a pull request is opened, gets new commits, or is reopened.
+  # No branch filter, so it covers PRs into `develop` and into `main`.
+  pull_request:
+
+# Starting a new run for the same PR cancels the older one still in progress,
+# so quick follow-up pushes don't pile up in the queue.
+concurrency:
+  group: pr-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+# The jobs only need to read the code, so the token gets read-only access.
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint, type check, and test
+    runs-on: ubuntu-latest
+    # Stops a hung step from using up free Actions minutes.
+    timeout-minutes: 15
+
+    steps:
+      # 1. Download the code at the pull request's merge commit.
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      # 2. Install pnpm. The project refuses npm (see the `preinstall` script),
+      #    and no `version` is given because the action reads the exact pnpm
+      #    version from "packageManager" in package.json.
+      #    `cache: true` saves the pnpm store between runs for faster installs.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          cache: true
+
+      # 3. Install Node.js. React Native 0.86 needs Node 20.19.4, 22.13, or
+      #    24.3 and newer; Node 22 is a long-term-support release that fits.
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # 4. Install dependencies exactly as pnpm-lock.yaml records them.
+      #    `--frozen-lockfile` fails the run if package.json and the lockfile
+      #    disagree, which catches a forgotten `pnpm-lock.yaml` commit.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 5. Lint with ESLint (the project's `lint` script wraps `expo lint`).
+      - name: Lint
+        run: pnpm lint
+
+      # 6. Type check with TypeScript. `--noEmit` checks types without writing
+      #    any files. There is no package.json script for this, so it calls
+      #    tsc directly, the same command the pre-commit hook uses.
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+
+      # 7. Run the Jest tests. `--ci` makes Jest fail on a missing snapshot
+      #    instead of quietly writing a new one.
+      - name: Test
+        run: pnpm test --ci
+
+      # Optional: the pre-commit hook also runs `pnpm format:check` (Prettier).
+      # It is left out because the request was lint, type check, and tests.
+      # Uncomment these two lines to enforce formatting in CI too.
+      # - name: Check formatting
+      #   run: pnpm format:check
