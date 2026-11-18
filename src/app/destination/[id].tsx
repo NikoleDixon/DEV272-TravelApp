@@ -3,14 +3,17 @@
 import { useColorMode } from "@/context/ColorMode";
 import { colors } from "@/design/themes";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router, Stack } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Button, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDestination } from "@/hooks/useDestination";
 
 export default function DestinationPage() {
   const { colorMode, setColorMode } = useColorMode();
   const theme = colors[colorMode];
   const insets = useSafeAreaInsets();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: destination, isPending, isError } = useDestination(id);
 
   return (
     <View
