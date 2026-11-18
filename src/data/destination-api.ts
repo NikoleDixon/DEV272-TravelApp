@@ -11,7 +11,7 @@ export async function fetchDestinations(): Promise<Destination[]> {
     throw new Error("Unable to load destinations.");
   }
 
-  return destinations;
+  return destinations.slice(0, 8);
 }
 
 export async function fetchDestination(
