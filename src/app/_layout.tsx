@@ -1,11 +1,17 @@
+import { ColorModeProvider } from "@/context/ColorMode";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 
-// Root layout. Every screen file inside src/app/ is a route.
-// Week 3 replaces this with Stack + Tabs layouts.
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "DEV 272" }} />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <ColorModeProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </ColorModeProvider>
+    </QueryClientProvider>
   );
 }

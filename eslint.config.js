@@ -19,6 +19,17 @@ module.exports = defineConfig([
   // with Prettier. Keep it after expoConfig.
   eslintPluginPrettierRecommended,
 
+  // Tells the import rules how to find packages.
+  {
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+        },
+      },
+    },
+  },
+
   // Course rules, for TypeScript files only. Without the `files` line,
   // `pnpm lint:fix` crashes on .js files such as this one.
   // Each rule is "off", "warn" (reported, does not fail), or "error" (fails).
