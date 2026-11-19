@@ -25,7 +25,7 @@ export const colors = {
     highlightColor: "#7CC6CC",
     errorTextColor: "#FF9E91",
     placeholderBackground: "#2B4640",
-    cardBorderColor: "#8F8164",
+    cardBorderColor: "#B3A27F",
     inputBorder: "#8A9A9F",
   },
 };
