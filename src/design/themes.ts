@@ -15,8 +15,8 @@ export const colors = {
   },
 
   darkMode: {
-    background: "#141C1F",
-    elementBackground: "#1F2A2E",
+    background: "#1A3524",
+    elementBackground: "#24442F",
     mainText: "#F5EEDF",
     secondaryText: "#C2CCC9",
     btnBackground: "#8CC79F",
