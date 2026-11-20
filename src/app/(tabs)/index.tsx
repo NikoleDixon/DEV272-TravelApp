@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 import {
   FlatList,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
 import DestinationCard from "../../components/DestinationCard";
-import EmptyState from "../../components/EmptyState";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
 import { useColorMode } from "../../context/ColorMode";
@@ -22,8 +20,10 @@ export default function Index() {
   const { colorMode } = useColorMode();
   const theme = colors[colorMode];
 
+  // Get destination data and loading or error status.
   const { data, isLoading, isError } = useDestinations();
 
+  // Store search text, selected category, and saved destinations.
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -40,10 +40,18 @@ export default function Index() {
 
   // Categories displayed in the wireframe.
   const categories = [
-    { label: "All", value: "all" },
-    { label: "Beaches", value: "beaches" },
-    { label: "Nature", value: "nature" },
-    { label: "Cities", value: "cities" },
+    { label: "All", value: "all", types: [] },
+    { label: "Beaches", value: "beaches", types: ["beach"] },
+    {
+      label: "Nature",
+      value: "nature",
+      types: ["mountains", "adventure"],
+    },
+    {
+      label: "Cities",
+      value: "cities",
+      types: ["city", "history"],
+    },
   ];
 
   // Filter destinations by search text and category.
@@ -55,23 +63,12 @@ export default function Index() {
       item.country.toLowerCase().includes(search) ||
       item.region.toLowerCase().includes(search);
 
-    let matchesCategory = false;
+    const selected = categories.find(
+      (category) => category.value === selectedCategory,
+    );
 
-    if (selectedCategory === "all") {
-      matchesCategory = true;
-    } else if (selectedCategory === "beaches" && item.category === "beach") {
-      matchesCategory = true;
-    } else if (
-      selectedCategory === "nature" &&
-      (item.category === "mountains" || item.category === "adventure")
-    ) {
-      matchesCategory = true;
-    } else if (
-      selectedCategory === "cities" &&
-      (item.category === "city" || item.category === "history")
-    ) {
-      matchesCategory = true;
-    }
+    const matchesCategory =
+      selectedCategory === "all" || selected?.types.includes(item.category);
 
     return matchesSearch && matchesCategory;
   });
@@ -124,6 +121,7 @@ export default function Index() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
+      {/* Explore screen header */}
       <Text style={[styles.title, { color: theme.mainText }]}>
         Discover, Save and Explore
       </Text>
@@ -131,27 +129,40 @@ export default function Index() {
       <Text style={[styles.subtitle, { color: theme.secondaryText }]}>
         Find your next trip
       </Text>
+      {/* Search destinations and clear the search text. */}
+      <View style={styles.searchRow}>
+        <TextInput
+          style={[
+            styles.searchInput,
+            {
+              backgroundColor: theme.elementBackground,
+              borderColor: theme.inputBorder,
+              color: theme.mainText,
+            },
+          ]}
+          placeholder="Search destinations..."
+          placeholderTextColor={theme.secondaryText}
+          value={searchText}
+          onChangeText={setSearchText}
+        />
 
-      <TextInput
-        style={[
-          styles.searchInput,
-          {
-            backgroundColor: theme.elementBackground,
-            borderColor: theme.inputBorder,
-            color: theme.mainText,
-          },
-        ]}
-        placeholder="Search destinations..."
-        placeholderTextColor={theme.secondaryText}
-        value={searchText}
-        onChangeText={setSearchText}
-      />
+        {searchText.length > 0 && (
+          <Pressable
+            style={[
+              styles.clearButton,
+              { backgroundColor: theme.btnBackground },
+            ]}
+            onPress={() => setSearchText("")}
+          >
+            <Text style={[styles.clearButtonText, { color: theme.btnText }]}>
+              Clear Search
+            </Text>
+          </Pressable>
+        )}
+      </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoryContainer}
-      >
+      {/* Display category filters. */}
+      <View style={styles.categoryContainer}>
         {categories.map((category) => (
           <Pressable
             key={category.value}
@@ -175,7 +186,6 @@ export default function Index() {
                     selectedCategory === category.value
                       ? theme.btnText
                       : theme.mainText,
-                  textAlign: "center",
                 },
               ]}
             >
@@ -183,46 +193,50 @@ export default function Index() {
             </Text>
           </Pressable>
         ))}
-      </ScrollView>
+      </View>
 
+      {/* Show the selected category and number of results. */}
       <View style={styles.resultsHeading}>
-        <Text style={[styles.resultsTitle, { color: theme.mainText }]}>
+        <Text
+          style={[styles.resultsTitle, { color: theme.mainText }]}
+          numberOfLines={1}
+        >
           {selectedCategory === "all"
             ? "All destinations"
             : categories.find((category) => category.value === selectedCategory)
                 ?.label}
         </Text>
 
-        <Text style={{ color: theme.secondaryText }}>
+        <Text
+          style={[styles.resultsCount, { color: theme.secondaryText }]}
+          numberOfLines={1}
+        >
           Showing {filteredDestinations.length} places
         </Text>
       </View>
 
+      {/* Display destination cards or an empty results message. */}
       <FlatList
         data={filteredDestinations}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
+        ItemSeparatorComponent={() => <View style={styles.cardSeparator} />}
         ListEmptyComponent={
-          <EmptyState
-            title="No destinations found"
-            message="Try another name or category."
-            buttonText="Clear search"
-            onButtonPress={() => {
-              setSearchText("");
-              setSelectedCategory("all");
-            }}
-          />
+          <View style={styles.emptyContainer}>
+            <Text style={[styles.emptyTitle, { color: theme.mainText }]}>
+              No destinations found
+            </Text>
+
+            <Text style={[styles.emptyMessage, { color: theme.secondaryText }]}>
+              Try another name or category.
+            </Text>
+          </View>
         }
         renderItem={({ item }) => {
-          let categoryLabel = "Cities";
-
-          if (item.category === "beach") {
-            categoryLabel = "Beaches";
-          } else if (
-            item.category === "mountains" ||
-            item.category === "adventure"
-          ) {
-            categoryLabel = "Nature";
-          }
+          const categoryLabel =
+            categories.find((category) =>
+              category.types.includes(item.category),
+            )?.label || "Cities";
 
           return (
             <DestinationCard
@@ -260,22 +274,43 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 24,
   },
+  searchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 20,
+  },
   searchInput: {
+    flex: 1,
     height: 48,
     borderWidth: 1,
     borderRadius: 16,
     paddingHorizontal: 16,
-    marginBottom: 20,
+  },
+  clearButton: {
+    height: 48,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  clearButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
   },
   categoryContainer: {
+    height: 64,
+    flexDirection: "row",
     gap: 8,
-    paddingBottom: 20,
+    alignItems: "center",
+    marginBottom: 16,
   },
   categoryChip: {
     width: 76,
+    height: 44,
+    flexShrink: 0,
     borderWidth: 1,
     borderRadius: 30,
-    paddingVertical: 12,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -285,6 +320,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   resultsHeading: {
+    height: 40,
+    flexShrink: 0,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -292,6 +329,33 @@ const styles = StyleSheet.create({
   },
   resultsTitle: {
     fontSize: 22,
+    lineHeight: 28,
     fontWeight: "bold",
+  },
+  resultsCount: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  listContainer: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
+  cardSeparator: {
+    height: 16,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  emptyMessage: {
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 8,
   },
 });
