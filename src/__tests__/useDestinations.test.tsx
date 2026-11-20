@@ -3,7 +3,14 @@ import { renderHook, waitFor } from "@testing-library/react-native";
 
 import { useDestinations } from "../hooks/useDestinations";
 
-test("useDestinations returns the sample destinations", async () => {
+jest.mock("../api/destinations", () => ({
+  fetchDestinations: jest.fn().mockResolvedValue([
+    { id: "1", name: "Test Destination" },
+    { id: "2", name: "Another Destination" },
+  ]),
+}));
+
+test("useDestinations returns destinations from the API", async () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -19,8 +26,6 @@ test("useDestinations returns the sample destinations", async () => {
   const { result } = await renderHook(() => useDestinations(), { wrapper });
 
   await waitFor(() => {
-    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toHaveLength(2);
   });
-
-  expect(result.current.data?.length).toBe(9);
 });
