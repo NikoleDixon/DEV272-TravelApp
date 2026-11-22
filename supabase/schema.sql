@@ -150,7 +150,7 @@ VALUES
 (
     'Athens', 'Greece', 'Attica', 'history',
     'Explore ancient monuments, archaeological sites, and Greek culture.',
-    'https://images.unsplash.com/photo-1552832230-c0197dd311b5',
+    'https://images.unsplash.com/photo-1779891425387-db3e9263a1a4?auto=format&fit=crop&fm=jpg&ixid=NHwxMjA3fDA%3D&ixlib=rb-4.1.0&q=60&w=3000',
     'April-June', 'low'
 ),
 (
@@ -174,7 +174,7 @@ VALUES
 (
     'Cancun', 'Mexico', 'Quintana Roo', 'beach',
     'Enjoy beautiful beaches, clear blue water, and relaxing resorts.',
-    'https://images.unsplash.com/photo-1723942093326-47203a1941c3?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1772656945540-77583e484667?auto=format&fit=crop&w=1200&q=80',
     'December-April', 'low'
 ),
 (
