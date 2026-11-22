@@ -156,7 +156,7 @@ VALUES
 (
     'Bali', 'Indonesia', 'Bali', 'beach',
     'Visit tropical beaches, temples, and beautiful coastal villages.',
-    'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57',
+    'https://images.unsplash.com/photo-1746107386072-4c69a5bb5274?auto=format&fit=crop&w=1200&q=80',
     'April-October', 'low'
 ),
 (
@@ -168,37 +168,37 @@ VALUES
 (
     'Barcelona', 'Spain', 'Catalonia', 'city',
     'Enjoy colorful architecture, local markets, and lively city streets.',
-    'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf',
+    'https://images.unsplash.com/photo-1792319770711-e33c3e14c3b8?auto=format&fit=crop&w=1200&q=80',
     'May-June', 'medium'
 ),
 (
     'Cancun', 'Mexico', 'Quintana Roo', 'beach',
     'Enjoy beautiful beaches, clear blue water, and relaxing resorts.',
-    'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57',
+    'https://images.unsplash.com/photo-1723942093326-47203a1941c3?auto=format&fit=crop&w=1200&q=80',
     'December-April', 'low'
 ),
 (
     'Costa Rica', 'Costa Rica', 'Guanacaste', 'adventure',
     'Enjoy rainforests, wildlife, waterfalls, and outdoor activities.',
-    'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5',
+    'https://images.unsplash.com/photo-1682965740861-fdd2065bdd2e?auto=format&fit=crop&w=1200&q=80',
     'December-April', 'low'
 ),
 (
     'Iceland', 'Iceland', 'Southern Region', 'adventure',
     'Experience waterfalls, glaciers, volcanoes, and northern lights.',
-    'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5',
+    'https://images.unsplash.com/photo-1661041524618-220a2a2b8b74?auto=format&fit=crop&w=1200&q=80',
     'June-August', 'high'
 ),
 (
     'Kyoto', 'Japan', 'Kansai', 'history',
     'Visit traditional temples, historic streets, and peaceful gardens.',
-    'https://images.unsplash.com/photo-1552832230-c0197dd311b5',
+    'https://images.unsplash.com/photo-1751497018015-74e13bba9ab6?auto=format&fit=crop&w=1200&q=80',
     'March-May', 'medium'
 ),
 (
     'Machu Picchu', 'Peru', 'Cusco', 'adventure',
     'Explore ancient Inca ruins surrounded by mountain scenery.',
-    'https://images.unsplash.com/photo-1526392060635-9d6019884377',
+    'https://images.unsplash.com/photo-1789264139695-a256badf50b2?auto=format&fit=crop&w=1200&q=80',
     'May-September', 'low'
 ),
 (
@@ -210,49 +210,49 @@ VALUES
 (
     'New York City', 'United States', 'New York', 'city',
     'Visit famous landmarks, museums, restaurants, and shopping areas.',
-    'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
+    'https://images.unsplash.com/photo-1767342976245-b34c150bddf9?auto=format&fit=crop&w=1200&q=80',
     'April-June', 'high'
 ),
 (
     'Paris', 'France', 'Ile-de-France', 'city',
     'Explore famous landmarks, art museums, cafes, and city streets.',
-    'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
+    'https://images.unsplash.com/photo-1521244550984-ab1883eb0ac2?auto=format&fit=crop&w=1200&q=80',
     'April-June', 'high'
 ),
 (
     'Patagonia', 'Argentina', 'Santa Cruz', 'adventure',
     'Discover glaciers, mountain landscapes, and outdoor adventures.',
-    'https://images.unsplash.com/photo-1526392060635-9d6019884377',
+    'https://images.unsplash.com/photo-1736390739590-72fccb016af0?auto=format&fit=crop&w=1200&q=80',
     'November-March', 'medium'
 ),
 (
     'Petra', 'Jordan', 'Ma-an', 'history',
     'Discover ancient architecture carved into beautiful red rock.',
-    'https://images.unsplash.com/photo-1526392060635-9d6019884377',
+    'https://images.unsplash.com/photo-1724618554459-a348dc6ffc8c?auto=format&fit=crop&w=1200&q=80',
     'March-May', 'low'
 ),
 (
     'Rome', 'Italy', 'Lazio', 'history',
     'Discover historic landmarks, ancient ruins, and Italian culture.',
-    'https://images.unsplash.com/photo-1552832230-c0197dd311b5',
+    'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=1200&q=80',
     'April-June', 'medium'
 ),
 (
     'Santorini', 'Greece', 'South Aegean', 'beach',
     'Enjoy coastal views, blue-domed buildings, and seaside villages.',
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+    'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80',
     'May-October', 'medium'
 ),
 (
     'Serengeti', 'Tanzania', 'Mara', 'adventure',
     'Explore wildlife, open grasslands, and unforgettable safari experiences.',
-    'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5',
+    'https://images.unsplash.com/photo-1715945935232-0f9dd5bdcf01?auto=format&fit=crop&w=1200&q=80',
     'June-October', 'high'
 ),
 (
     'Swiss Alps', 'Switzerland', 'Valais', 'mountains',
     'Experience mountain villages, snowy peaks, and scenic train rides.',
-    'https://images.unsplash.com/photo-1531366936337-7c912a4589a7',
+    'https://images.unsplash.com/photo-1687352868221-f0321319883b?auto=format&fit=crop&w=1200&q=80',
     'June-September', 'high'
 ),
 (
@@ -264,6 +264,6 @@ VALUES
 (
     'Yosemite', 'United States', 'California', 'mountains',
     'Explore granite cliffs, waterfalls, forests, and hiking trails.',
-    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+    'https://images.unsplash.com/photo-1708913156945-df01fdf89809?auto=format&fit=crop&w=1200&q=80',
     'May-September', 'medium'
 );
