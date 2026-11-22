@@ -1,17 +1,17 @@
+import DestinationDetails from "@/components/DestinationDetails";
+import EmptyState from "@/components/EmptyState";
+import ErrorMessage from "@/components/ErrorMessage";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { useColorMode } from "@/context/ColorMode";
 import { colors } from "@/design/themes";
+import { useDestination } from "@/hooks/useDestination";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { Button, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDestination } from "@/hooks/useDestination";
-import LoadingSkeleton from "@/components/LoadingSkeleton";
-import ErrorMessage from "@/components/ErrorMessage";
-import EmptyState from "@/components/EmptyState";
-import DestinationDetails from "@/components/DestinationDetails";
 
 export default function DestinationPage() {
-  const { colorMode, setColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const theme = colors[colorMode];
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -50,7 +50,7 @@ export default function DestinationPage() {
     <View
       style={[
         styles.container,
-        { backgroundColor: theme.background, paddingTop: insets.top },
+        { backgroundColor: theme.background, paddingTop: insets.top + 12 },
       ]}
     >
       <Stack.Screen options={{ headerShown: false }} />
@@ -64,14 +64,19 @@ export default function DestinationPage() {
         >
           <Ionicons name="chevron-back" size={26} color={theme.mainText} />
         </Pressable>
+        <Text
+          style={{
+            color: theme.mainText,
+            fontSize: 20,
+            fontWeight: "600",
+          }}
+        >
+          Destination Details
+        </Text>
+
+        <View style={{ width: 34 }} />
       </View>
       <DestinationDetails destination={destination} />
-      <Button
-        title="Change Color Mode"
-        onPress={() =>
-          setColorMode(colorMode === "lightMode" ? "darkMode" : "lightMode")
-        }
-      />
     </View>
   );
 }
