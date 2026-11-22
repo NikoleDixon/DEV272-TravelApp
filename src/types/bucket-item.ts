@@ -2,5 +2,5 @@ export type BucketItem = {
   id: string;
   user_id: string;
   destination_id: string;
-  created_at: string;
+  created_at: string | null;
 };
