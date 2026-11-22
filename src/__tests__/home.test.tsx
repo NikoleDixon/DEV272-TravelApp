@@ -13,7 +13,8 @@ jest.mock("../api/destinations", () => ({
       region: "Quintana Roo",
       category: "beach",
       description: "Beautiful beaches and clear water.",
-      image_url: "https://example.com/cancun.jpg",
+      image_url:
+        "https://images.unsplash.com/photo-1772656945540-77583e484667?auto=format&fit=crop&w=1200&q=80",
       best_season: "Winter",
       cost_level: "moderate",
       created_at: "2026-11-20T00:00:00Z",
