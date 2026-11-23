@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image, Text, View } from "react-native";
 import { useColorMode } from "../context/ColorMode";
-import { colors } from "../design/themes";
+import { colors, fontFamily, fontSize, spacing } from "../design/themes";
 import type { Destination } from "../types/destination";
 import { Button } from "./Button";
 
@@ -14,7 +14,7 @@ export default function DestinationDetails({ destination }: Props) {
   const theme = colors[colorMode];
 
   return (
-    <View style={{ padding: 16 }}>
+    <View style={{ padding: spacing.lg }}>
       <Image
         source={{ uri: destination.image_url }}
         style={{ width: "100%", height: 320, borderRadius: 12 }}
@@ -23,9 +23,9 @@ export default function DestinationDetails({ destination }: Props) {
       <Text
         style={{
           color: theme.mainText,
-          fontSize: 32,
-          fontWeight: "bold",
-          marginTop: 16,
+          fontSize: fontSize.screenTitle,
+          fontFamily: fontFamily.title,
+          marginTop: spacing.lg,
         }}
       >
         {destination.name}
@@ -34,9 +34,9 @@ export default function DestinationDetails({ destination }: Props) {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginTop: 8,
+          marginTop: spacing.sm,
           gap: 2,
-          marginLeft: 12,
+          marginLeft: spacing.md,
         }}
       >
         <Ionicons
@@ -52,7 +52,7 @@ export default function DestinationDetails({ destination }: Props) {
         <View
           style={{
             backgroundColor: theme.elementBackground,
-            paddingHorizontal: 12,
+            paddingHorizontal: spacing.md,
             paddingVertical: 6,
             borderRadius: 20,
             marginLeft: 10,
@@ -63,13 +63,13 @@ export default function DestinationDetails({ destination }: Props) {
           </Text>
         </View>
       </View>
-      <View style={{ marginTop: 24 }}>
+      <View style={{ marginTop: spacing.xl }}>
         <Text
           style={{
             color: theme.mainText,
-            fontSize: 24,
-            fontWeight: "bold",
-            marginBottom: 12,
+            fontSize: fontSize.sectionTitle,
+            fontFamily: fontFamily.title,
+            marginBottom: spacing.md,
           }}
         >
           About
@@ -85,22 +85,22 @@ export default function DestinationDetails({ destination }: Props) {
           {destination.description}
         </Text>
       </View>
-      <View style={{ marginTop: 16, gap: 8 }}>
-        <Text style={{ color: theme.secondaryText, fontSize: 16 }}>
+      <View style={{ marginTop: spacing.lg, gap: spacing.sm }}>
+        <Text style={{ color: theme.secondaryText, fontSize: fontSize.body, fontFamily: fontFamily.roovia }}>
           Region: {destination.region}
         </Text>
 
-        <Text style={{ color: theme.secondaryText, fontSize: 16 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: fontSize.body, fontFamily: fontFamily.roovia }}>
           Best Season: {destination.best_season}
         </Text>
 
-        <Text style={{ color: theme.secondaryText, fontSize: 16 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: fontSize.body, fontFamily: fontFamily.roovia }}>
           Cost Level: {destination.cost_level}
         </Text>
       </View>
 
       <View
-        style={{ marginTop: 16, gap: 12, width: "85%", alignSelf: "center" }}
+        style={{ marginTop: spacing.lg, gap: spacing.md, width: "85%", alignSelf: "center" }}
       >
         <Button title="Save to Bucket List" onPress={() => {}} />
 

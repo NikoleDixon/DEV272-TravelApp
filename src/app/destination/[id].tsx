@@ -3,7 +3,7 @@ import EmptyState from "@/components/EmptyState";
 import ErrorMessage from "@/components/ErrorMessage";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { useColorMode } from "@/context/ColorMode";
-import { colors } from "@/design/themes";
+import { colors, fontFamily, fontSize, spacing } from "@/design/themes";
 import { useDestination } from "@/hooks/useDestination";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
@@ -50,7 +50,7 @@ export default function DestinationPage() {
     <View
       style={[
         styles.container,
-        { backgroundColor: theme.background, paddingTop: insets.top + 12 },
+        { backgroundColor: theme.background, paddingTop: insets.top + spacing.md },
       ]}
     >
       <Stack.Screen options={{ headerShown: false }} />
@@ -67,7 +67,8 @@ export default function DestinationPage() {
         <Text
           style={{
             color: theme.mainText,
-            fontSize: 20,
+            fontSize: fontSize.sectionTitle,
+            fontFamily: fontFamily.roovia,
             fontWeight: "600",
           }}
         >
@@ -91,10 +92,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
   },
   backButton: {
-    padding: 4,
+    padding: spacing.xs,
     justifyContent: "center",
     alignItems: "center",
   },
