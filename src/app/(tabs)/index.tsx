@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   FlatList,
@@ -11,7 +11,9 @@ import {
 import DestinationCard from "../../components/DestinationCard";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
+import { categories, getCategoryLabel } from "../../constants/categories";
 import { useColorMode } from "../../context/ColorMode";
+import { useBucketList } from "../../context/SavedBucketList";
 import { colors } from "../../design/themes";
 import { useDestinations } from "../../hooks/useDestinations";
 
@@ -23,11 +25,14 @@ export default function Index() {
   // Get destination data and loading or error status.
   const { data, isLoading, isError } = useDestinations();
 
-  // Store search text, selected category, and saved destinations.
+  // Store search text, selected category, and any save error message.
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [savedDestinationIds, setSavedDestinationIds] = useState<string[]>([]);
+  const [saveError, setSaveError] = useState("");
+
+  // Saved destinations come from the shared bucket list (Supabase).
+  const { savedIds, toggleSave } = useBucketList();
 
   // Wait 300 milliseconds after the user stops typing.
   useEffect(() => {
@@ -37,22 +42,6 @@ export default function Index() {
 
     return () => clearTimeout(timer);
   }, [searchText]);
-
-  // Categories displayed in the wireframe.
-  const categories = [
-    { label: "All", value: "all", types: [] },
-    { label: "Beaches", value: "beaches", types: ["beach"] },
-    {
-      label: "Nature",
-      value: "nature",
-      types: ["mountains", "adventure"],
-    },
-    {
-      label: "Cities",
-      value: "cities",
-      types: ["city", "history"],
-    },
-  ];
 
   // Filter destinations by search text and category.
   const filteredDestinations = (data ?? []).filter((item) => {
@@ -74,13 +63,15 @@ export default function Index() {
   });
 
   // Add or remove a destination from the saved list.
-  const toggleSave = (id: string) => {
-    if (savedDestinationIds.includes(id)) {
-      setSavedDestinationIds(
-        savedDestinationIds.filter((savedId) => savedId !== id),
-      );
+  const handleToggle = async (id: string) => {
+    const result = await toggleSave(id);
+
+    if (result === "signed-out") {
+      router.push("/sign-in" as Href); // TODO: remove "as Href" after sign-in is merged
+    } else if (result === "error") {
+      setSaveError("Could not update your bucket list. Please try again.");
     } else {
-      setSavedDestinationIds([...savedDestinationIds, id]);
+      setSaveError("");
     }
   };
 
@@ -215,6 +206,16 @@ export default function Index() {
         </Text>
       </View>
 
+      {/* Only shows when saving or removing failed. */}
+      {saveError !== "" && (
+        <Text
+          style={[styles.saveError, { color: theme.errorTextColor }]}
+          accessibilityRole="alert"
+        >
+          {saveError}
+        </Text>
+      )}
+
       {/* Display destination cards or an empty results message. */}
       <FlatList
         data={filteredDestinations}
@@ -233,10 +234,7 @@ export default function Index() {
           </View>
         }
         renderItem={({ item }) => {
-          const categoryLabel =
-            categories.find((category) =>
-              category.types.includes(item.category),
-            )?.label || "Cities";
+          const categoryLabel = getCategoryLabel(item.category);
 
           return (
             <DestinationCard
@@ -244,8 +242,8 @@ export default function Index() {
               country={item.country}
               category={categoryLabel}
               imageUrl={item.image_url}
-              isSaved={savedDestinationIds.includes(item.id)}
-              onToggleSave={() => toggleSave(item.id)}
+              isSaved={savedIds.includes(item.id)}
+              onToggleSave={() => handleToggle(item.id)}
               onPress={() =>
                 router.push({
                   pathname: "/destination/[id]",
@@ -335,6 +333,10 @@ const styles = StyleSheet.create({
   resultsCount: {
     fontSize: 14,
     lineHeight: 20,
+  },
+  saveError: {
+    fontSize: 14,
+    marginBottom: 8,
   },
   listContainer: {
     flexGrow: 1,
