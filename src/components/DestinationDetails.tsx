@@ -86,21 +86,44 @@ export default function DestinationDetails({ destination }: Props) {
         </Text>
       </View>
       <View style={{ marginTop: spacing.lg, gap: spacing.sm }}>
-        <Text style={{ color: theme.secondaryText, fontSize: fontSize.body, fontFamily: fontFamily.roovia }}>
+        <Text
+          style={{
+            color: theme.secondaryText,
+            fontSize: fontSize.body,
+            fontFamily: fontFamily.roovia,
+          }}
+        >
           Region: {destination.region}
         </Text>
 
-        <Text style={{ color: theme.secondaryText, fontSize: fontSize.body, fontFamily: fontFamily.roovia }}>
+        <Text
+          style={{
+            color: theme.secondaryText,
+            fontSize: fontSize.body,
+            fontFamily: fontFamily.roovia,
+          }}
+        >
           Best Season: {destination.best_season}
         </Text>
 
-        <Text style={{ color: theme.secondaryText, fontSize: fontSize.body, fontFamily: fontFamily.roovia }}>
+        <Text
+          style={{
+            color: theme.secondaryText,
+            fontSize: fontSize.body,
+            fontFamily: fontFamily.roovia,
+          }}
+        >
           Cost Level: {destination.cost_level}
         </Text>
       </View>
 
       <View
-        style={{ marginTop: spacing.lg, gap: spacing.md, width: "85%", alignSelf: "center" }}
+        style={{
+          marginTop: spacing.lg,
+          gap: spacing.md,
+          width: "85%",
+          alignSelf: "center",
+        }}
       >
         <Button title="Save to Bucket List" onPress={() => {}} />
 

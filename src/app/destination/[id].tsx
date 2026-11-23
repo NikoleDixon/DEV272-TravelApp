@@ -50,7 +50,10 @@ export default function DestinationPage() {
     <View
       style={[
         styles.container,
-        { backgroundColor: theme.background, paddingTop: insets.top + spacing.md },
+        {
+          backgroundColor: theme.background,
+          paddingTop: insets.top + spacing.md,
+        },
       ]}
     >
       <Stack.Screen options={{ headerShown: false }} />
