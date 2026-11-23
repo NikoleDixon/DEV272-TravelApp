@@ -3,6 +3,7 @@ import { render } from "@testing-library/react-native";
 
 import Index from "@/app/(tabs)/index";
 import { ColorModeProvider } from "@/context/ColorMode";
+import { BucketListProvider } from "@/context/SavedBucketList";
 
 jest.mock("../api/destinations", () => ({
   fetchDestinations: jest.fn().mockResolvedValue([
@@ -34,7 +35,9 @@ test("Explore screen shows the destinations", async () => {
   const { findByText } = await render(
     <QueryClientProvider client={queryClient}>
       <ColorModeProvider>
-        <Index />
+        <BucketListProvider>
+          <Index />
+        </BucketListProvider>
       </ColorModeProvider>
     </QueryClientProvider>,
   );
