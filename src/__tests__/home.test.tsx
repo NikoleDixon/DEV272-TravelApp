@@ -3,7 +3,7 @@ import { render } from "@testing-library/react-native";
 
 import Index from "@/app/(tabs)/index";
 import { ColorModeProvider } from "@/context/ColorMode";
-import { BucketListProvider } from "@/context/SavedBucketList";
+import { BucketListProvider } from "../context/SavedBucketList";
 
 jest.mock("../api/destinations", () => ({
   fetchDestinations: jest.fn().mockResolvedValue([
