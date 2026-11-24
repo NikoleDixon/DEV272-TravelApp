@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Image, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import { useColorMode } from "../context/ColorMode";
 import { colors, fontFamily, fontSize, spacing } from "../design/themes";
 import type { Destination } from "../types/destination";
@@ -14,7 +14,10 @@ export default function DestinationDetails({ destination }: Props) {
   const theme = colors[colorMode];
 
   return (
-    <View style={{ padding: spacing.lg }}>
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{ padding: spacing.lg }}
+    >
       <Image
         source={{ uri: destination.image_url }}
         style={{ width: "100%", height: 320, borderRadius: 12 }}
@@ -132,6 +135,6 @@ export default function DestinationDetails({ destination }: Props) {
           onPress={() => {}}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
