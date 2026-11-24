@@ -86,16 +86,26 @@ This project uses pnpm as its package manager. Please do not use npm or yarn to 
 
 ### 3. Set Up Environment Variables
 
-Roovia uses Supabase for authentication and remote data. Create a `.env` file in the root of the project and add the following variables:
+Roovia uses Supabase for authentication and remote data. The app needs the following environment variables to connect to the team's Supabase project:
 
 ```env
 EXPO_PUBLIC_SUPABASE_URL=
 EXPO_PUBLIC_SUPABASE_KEY=
 ```
 
-Replace the empty values with the Supabase project URL and public key provided for the project.
+**Setting up your `.env` file:**
 
-**Important:** Do not commit your actual `.env` file or private credentials to GitHub.
+1. Open the main project folder (`DEV272-TravelApp`).
+2. Check that the team's `.env` file is present in the project root. It should be included when you clone the repository.
+3. If the `.env` file is missing, ask a teammate for the approved environment variable values before creating one.
+4. Make sure the file contains both `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_KEY`.
+5. Save the file.
+6. Restart the Expo development server if it is already running.
+
+**Important:**
+- Use the team's shared Supabase project credentials.
+- The publishable key is intended for use in the client application.
+- Never use the Supabase `service_role` key or secret key in the app.
 
 ### 4. Start the App
 

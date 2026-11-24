@@ -1,21 +1,21 @@
+import DestinationDetails from "@/components/DestinationDetails";
+import EmptyState from "@/components/EmptyState";
+import ErrorMessage from "@/components/ErrorMessage";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { useColorMode } from "@/context/ColorMode";
 import { colors } from "@/design/themes";
+import { useDestination } from "@/hooks/useDestination";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Button, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDestination } from "@/hooks/useDestination";
-import LoadingSkeleton from "@/components/LoadingSkeleton";
-import ErrorMessage from "@/components/ErrorMessage";
-import EmptyState from "@/components/EmptyState";
-import DestinationDetails from "@/components/DestinationDetails";
 
 export default function DestinationPage() {
   const { colorMode, setColorMode } = useColorMode();
   const theme = colors[colorMode];
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: destination, isPending, isError } = useDestination(id);
+  const { data: destination, isPending, isError, refetch } = useDestination(id);
   if (isPending) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -29,6 +29,7 @@ export default function DestinationPage() {
         <ErrorMessage
           title="Unexpected Detour!"
           message="This wasn't on the itinerary. Let's get back on track!"
+          onRetry={() => refetch()}
         />
       </View>
     );

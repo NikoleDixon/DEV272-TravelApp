@@ -1,12 +1,18 @@
 import { Text, View } from "react-native";
 import { useColorMode } from "../context/ColorMode";
 import { colors } from "../design/themes";
+import { Button } from "./Button";
 
 type ErrorMessageProps = {
   title: string;
   message: string;
+  onRetry?: () => void;
 };
-export default function ErrorMessage({ title, message }: ErrorMessageProps) {
+export default function ErrorMessage({
+  title,
+  message,
+  onRetry,
+}: ErrorMessageProps) {
   const { colorMode } = useColorMode();
   const theme = colors[colorMode];
   return (
@@ -38,6 +44,7 @@ export default function ErrorMessage({ title, message }: ErrorMessageProps) {
       >
         {message}
       </Text>
+      {onRetry && <Button title="Try Again" onPress={onRetry} />}
     </View>
   );
 }
