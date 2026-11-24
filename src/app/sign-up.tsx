@@ -1,23 +1,27 @@
 import { Button } from "@/components/Button";
+import { useAuth } from "@/context/AuthContext";
 import { useColorMode } from "@/context/ColorMode";
-import { colors, fontFamily, fontSize } from "@/design/themes";
-import { supabase } from "@/lib/supabase";
+import { colors, fontFamily, fontSize, spacing } from "@/design/themes";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router, Stack } from "expo-router";
 import { useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import FormErrorSummary from "../components/FormErrorSummary";
+import FormField from "../components/FormField";
+
+type FieldErrors = {
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+};
 
 export default function SignUp() {
   const { colorMode } = useColorMode();
   const theme = colors[colorMode];
+  const insets = useSafeAreaInsets();
+  const { signUp } = useAuth();
 
   // State: these hold what the user types
   const [email, setEmail] = useState("");
@@ -25,48 +29,76 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [serverError, setServerError] = useState("");
   const [message, setMessage] = useState("");
 
-  // State: holds a message if something is wrong
-  const [error, setError] = useState("");
+  // Check the form before sending it to Supabase.
+  const validate = (): FieldErrors => {
+    const errors: FieldErrors = {};
+
+    if (email.trim() === "") {
+      errors.email = "Enter your email address.";
+    } else if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+      errors.email = "Enter an email like name@example.com.";
+    }
+
+    if (password === "") {
+      errors.password = "Enter a password.";
+    } else if (password.length < 6) {
+      errors.password = "Password must be at least 6 characters.";
+    }
+
+    if (confirmPassword === "") {
+      errors.confirmPassword = "Confirm your password.";
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
+
+    return errors;
+  };
 
   const handleSignUp = async () => {
     if (loading) return;
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    setError("");
+    const errors = validate();
+    setFieldErrors(errors);
+    setServerError("");
     setMessage("");
+    if (Object.keys(errors).length > 0) return;
+
     setLoading(true);
 
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email,
+    const { error: signUpError, needsEmailConfirmation } = await signUp(
+      email.trim(),
       password,
-    });
+    );
 
     setLoading(false);
 
     if (signUpError) {
-      setError(signUpError.message);
+      setServerError(signUpError);
       return;
     }
 
-    if (data.session) {
-      // Email confirmation is off: the user is already signed in
-      router.back();
-    } else {
+    if (needsEmailConfirmation) {
       // Email confirmation is on: they must click the link first
       setMessage("Check your email to confirm your account, then sign in.");
+    } else {
+      // Email confirmation is off: the user is already signed in
+      router.back();
     }
   };
+
+  const problemCount = Object.keys(fieldErrors).length;
 
   return (
     <ScrollView
       style={{ backgroundColor: theme.background }}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={[
+        styles.container,
+        { paddingTop: insets.top + spacing.lg },
+      ]}
       keyboardShouldPersistTaps="handled"
     >
       {/* Hides the default header so we can use our own */}
@@ -78,121 +110,129 @@ export default function SignUp() {
         style={[
           styles.backButton,
           {
-            borderColor: theme.inputBorder,
+            borderColor: theme.mainText,
             backgroundColor: theme.elementBackground,
           },
         ]}
         accessibilityRole="button"
         accessibilityLabel="Go back"
       >
-        <Ionicons name="arrow-back" size={24} color={theme.mainText} />
+        <Ionicons name="chevron-back" size={24} color={theme.mainText} />
       </Pressable>
 
-      {/* Logo */}
-      <View style={styles.brand}>
+      {/* Logo + header text (centered) */}
+      <View style={styles.header}>
         <Image
           source={require("@/assets/images/roovialogo.svg")}
-          style={[styles.logo]}
+          style={styles.logo}
           tintColor={theme.btnBackground}
         />
-        <Text style={[styles.brandName, { color: theme.mainText }]}>
+        <Text style={[styles.brandName, { color: theme.btnBackground }]}>
           Roovia
         </Text>
+        <Text style={[styles.title, { color: theme.mainText }]}>
+          Create your account
+        </Text>
+        <Text style={[styles.subtitle, { color: theme.secondaryText }]}>
+          Save destinations and plan trips with Roovia.
+        </Text>
       </View>
-      {/* Header text */}
-      <Text style={[styles.title, { color: theme.mainText }]}>
-        Create your account
-      </Text>
-      <Text style={[styles.subtitle, { color: theme.secondaryText }]}>
-        Save destinations and plan trips with Roovia.
-      </Text>
 
-      {/* Email */}
-      <Text style={[styles.label, { color: theme.mainText }]}>Email</Text>
-      <TextInput
-        style={[
-          styles.input,
-          {
-            borderColor: theme.inputBorder,
-            color: theme.mainText,
-            backgroundColor: theme.elementBackground,
-          },
-        ]}
+      {/* Error summary: field problems, or a message from Supabase */}
+      {problemCount > 0 ? (
+        <FormErrorSummary
+          title={
+            problemCount === 1
+              ? "There is 1 problem"
+              : `There are ${problemCount} problems`
+          }
+          message="Check the fields marked below."
+        />
+      ) : serverError !== "" ? (
+        <FormErrorSummary
+          title="Couldn't create your account"
+          message={serverError}
+        />
+      ) : null}
+
+      {/* "Check your email" confirmation */}
+      {message !== "" && (
+        <View
+          style={[
+            styles.messageBox,
+            {
+              backgroundColor: theme.elementBackground,
+              borderColor: theme.btnBackground,
+            },
+          ]}
+          accessibilityLiveRegion="polite"
+        >
+          <Ionicons name="mail-outline" size={24} color={theme.btnBackground} />
+          <Text style={[styles.messageText, { color: theme.mainText }]}>
+            {message}
+          </Text>
+        </View>
+      )}
+
+      <FormField
+        label="Email"
+        placeholder="you@example.com"
         value={email}
         onChangeText={setEmail}
+        error={fieldErrors.email}
         keyboardType="email-address"
         autoCapitalize="none"
+        autoComplete="email"
+        textContentType="emailAddress"
       />
 
-      {/* Password */}
-      <Text style={[styles.label, { color: theme.mainText }]}>
-        Password (At least 6 characters)
-      </Text>
-      <TextInput
-        style={[
-          styles.input,
-          {
-            borderColor: theme.inputBorder,
-            color: theme.mainText,
-            backgroundColor: theme.elementBackground,
-          },
-        ]}
+      <FormField
+        label="Password"
+        hint="At least 6 characters"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true}
+        error={fieldErrors.password}
+        secureTextEntry
+        autoCapitalize="none"
+        autoComplete="new-password"
+        textContentType="newPassword"
       />
 
-      {/* Confirm password (the new field) */}
-      <Text style={[styles.label, { color: theme.mainText }]}>
-        Confirm password
-      </Text>
-      <TextInput
-        style={[
-          styles.input,
-          {
-            borderColor: theme.inputBorder,
-            color: theme.mainText,
-            backgroundColor: theme.elementBackground,
-          },
-        ]}
+      <FormField
+        label="Confirm password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        secureTextEntry={true}
+        error={fieldErrors.confirmPassword}
+        secureTextEntry
+        autoCapitalize="none"
+        autoComplete="new-password"
+        textContentType="newPassword"
       />
 
-      {/* Only shows when error is not an empty string */}
-      {error !== "" && (
-        <Text style={styles.errorText} accessibilityRole="alert">
-          {error}
-        </Text>
-      )}
-
-      {message !== "" && (
-        <Text style={[styles.errorText, { color: theme.mainText }]}>
-          {message}
-        </Text>
-      )}
-
-      {/* Sign up button */}
       <View style={styles.buttonWrap}>
-        <Button title="Sign up" onPress={handleSignUp} />
+        <Button
+          title={loading ? "Creating account..." : "Sign up"}
+          onPress={handleSignUp}
+        />
       </View>
 
       {/* Switch to sign in */}
       <Pressable
         onPress={() => router.replace("/sign-in")}
         style={styles.switchLink}
+        accessibilityRole="link"
+        accessibilityLabel="Sign in"
       >
-        <Text style={{ color: theme.mainText }}>
+        <Text style={{ color: theme.mainText, fontSize: fontSize.body }}>
           Already have an account?{" "}
           <Text
             style={{
-              color: theme.btnBackground,
+              color: theme.highlightColor,
               fontWeight: "bold",
               textDecorationLine: "underline",
             }}
           >
-            Sign up
+            Sign in
           </Text>
         </Text>
       </Pressable>
@@ -202,8 +242,8 @@ export default function SignUp() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
-    paddingTop: 60,
+    padding: spacing.xl,
+    paddingBottom: spacing.xxl,
   },
   backButton: {
     width: 48,
@@ -213,48 +253,59 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  brand: {
-    flexDirection: "row",
+  header: {
     alignItems: "center",
-    marginTop: 24,
-    marginBottom: 24,
+    marginTop: spacing.sm,
+    marginBottom: spacing.xl,
   },
-  logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
+  logoBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
+  },
+  logo: {
+    width: 80,
+    height: 80,
   },
   brandName: {
     fontSize: fontSize.screenTitle,
     fontFamily: fontFamily.roovia,
+    marginTop: spacing.sm,
   },
-  title: { fontSize: fontSize.screenTitle, fontFamily: fontFamily.title },
+  title: {
+    fontSize: fontSize.screenTitle,
+    fontFamily: fontFamily.title,
+    textAlign: "center",
+    marginTop: spacing.sm,
+  },
   subtitle: {
     fontSize: fontSize.label,
-    marginTop: 8,
-    marginBottom: 24,
+    textAlign: "center",
+    marginTop: spacing.sm,
   },
-  label: { fontSize: fontSize.label, marginBottom: 6 },
-  input: {
-    minHeight: 48,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
+  messageBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
+    borderWidth: 2,
+    borderRadius: 12,
+    padding: spacing.md,
+    marginBottom: spacing.xl,
+  },
+  messageText: {
+    flex: 1,
     fontSize: fontSize.label,
-    marginBottom: 16,
   },
-  errorText: {
-    fontSize: fontSize.caption,
-    marginBottom: 8,
+  buttonWrap: {
+    marginTop: spacing.sm,
   },
-  buttonWrap: { marginTop: 8 },
   switchLink: {
     minHeight: 48,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 16,
+    marginTop: spacing.xl,
   },
 });

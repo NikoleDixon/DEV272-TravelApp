@@ -1,161 +1,357 @@
-// Profile Tab: for login in and eventually light/dark mode
+// Profile Tab: sign in / sign up, account info, and dark mode
 
+import { Button } from "@/components/Button";
+import { useAuth } from "@/context/AuthContext";
 import { useColorMode } from "@/context/ColorMode";
-import { colors, fontSize, spacing } from "@/design/themes";
+import { colors, fontFamily, fontSize, spacing } from "@/design/themes";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
-import { Button } from "../../components/Button";
+import { useState } from "react";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from "react-native";
+import ScreenHeader from "../../components/ScreenHeader";
 
-export default function Profile() {
+export default function ProfileScreen() {
   const { colorMode, setColorMode } = useColorMode();
   const theme = colors[colorMode];
+  const { user, isSignedIn, loading, signOut } = useAuth();
+
+  const [signingOut, setSigningOut] = useState(false);
+  const [signOutError, setSignOutError] = useState("");
+
   const isDark = colorMode === "darkMode";
+
+  const handleSignOut = async () => {
+    if (signingOut) return;
+    setSignOutError("");
+    setSigningOut(true);
+
+    const errorMessage = await signOut();
+
+    setSigningOut(false);
+
+    if (errorMessage) {
+      setSignOutError(errorMessage);
+    }
+    // On success, AuthContext sees the change and this screen switches
+    // back to the signed-out view on its own.
+  };
+
+  // Wait for the saved session to load so we don't flash the guest view.
+  if (loading) {
+    return (
+      <View style={[styles.flex, { backgroundColor: theme.background }]} />
+    );
+  }
 
   return (
     <ScrollView
       style={{ backgroundColor: theme.background }}
       contentContainerStyle={styles.container}
     >
-      <Text style={[styles.screenTitle, { color: theme.mainText }]}>
-        Profile
-      </Text>
-      <Text style={[styles.text, { color: theme.secondaryText }]}>
-        You are browsing as a guest.
-      </Text>
-      {/* Signed out card */}
-      <View
-        style={[
-          styles.card,
-          {
-            borderColor: theme.inputBorder,
-            backgroundColor: theme.elementBackground,
-          },
-        ]}
-      >
-        {/* Logo */}
-        <Image
-          source={require("@/assets/images/roovialogo.svg")}
-          style={[styles.logo]}
-          tintColor={theme.btnBackground}
-        />
-        <Text style={[styles.logoText, { color: theme.mainText }]}>Roovia</Text>
+      {/* Screen header */}
+      <ScreenHeader
+        title="Profile"
+        subtitle={isSignedIn ? "Roovia" : "You are browsing as a guest"}
+      />
 
-        <Text style={[styles.cardTitle, { color: theme.mainText }]}>
-          You are not signed in.
-        </Text>
-        <Text style={[styles.profileMessage, { color: theme.secondaryText }]}>
-          Sign in or create an account to save destinations and plan trips.
-        </Text>
-
-        {/* Each button opens a screen on top of this one */}
+      {isSignedIn ? (
+        /* ---------- Signed in: account card ---------- */
+        <>
+          <Text style={[styles.sectionTitle, { color: theme.mainText }]}>
+            Account
+          </Text>
+          <View
+            style={[
+              styles.card,
+              styles.accountCard,
+              {
+                backgroundColor: theme.elementBackground,
+                borderColor: theme.inputBorder,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.avatar,
+                {
+                  backgroundColor: theme.placeholderBackground,
+                  borderColor: theme.mainText,
+                },
+              ]}
+            >
+              <Ionicons
+                name="person-outline"
+                size={28}
+                color={theme.mainText}
+              />
+            </View>
+            <View style={styles.accountText}>
+              <Text style={[styles.caption, { color: theme.secondaryText }]}>
+                Signed in as
+              </Text>
+              <Text
+                style={[styles.email, { color: theme.mainText }]}
+                numberOfLines={1}
+              >
+                {user?.email}
+              </Text>
+            </View>
+          </View>
+        </>
+      ) : (
+        /* ---------- Signed out: guest card ---------- */
         <View
-          style={[styles.buttonWrap, { backgroundColor: theme.btnBackground }]}
+          style={[
+            styles.card,
+            styles.guestCard,
+            {
+              backgroundColor: theme.elementBackground,
+              borderColor: theme.inputBorder,
+            },
+          ]}
         >
-          <Button title="Sign in" onPress={() => router.push("/sign-in")} />
-        </View>
-        <View
-          style={[styles.buttonWrap, { backgroundColor: theme.btnBackground }]}
-        >
-          <Button title="Sign up" onPress={() => router.push("/sign-up")} />
-        </View>
-      </View>
+          <Image
+            source={require("@/assets/images/roovialogo.svg")}
+            style={styles.logo}
+            tintColor={theme.btnBackground}
+          />
+          <Text style={[styles.brandName, { color: theme.btnBackground }]}>
+            Roovia
+          </Text>
+          <Text style={[styles.guestTitle, { color: theme.mainText }]}>
+            You&#39;re not signed in
+          </Text>
+          <Text style={[styles.guestMessage, { color: theme.secondaryText }]}>
+            Sign in or create an account to save destinations and plan trips.
+          </Text>
 
-      {/* Appearance section */}
+          <View style={styles.buttonStack}>
+            <Button title="Sign in" onPress={() => router.push("/sign-in")} />
+            <OutlineButton
+              title="Sign up"
+              color={theme.btnBackground}
+              onPress={() => router.push("/sign-up")}
+            />
+          </View>
+        </View>
+      )}
+
+      {/* ---------- Appearance (both states) ---------- */}
       <Text style={[styles.sectionTitle, { color: theme.mainText }]}>
         Appearance
       </Text>
       <View
         style={[
-          styles.row,
+          styles.card,
+          styles.settingRow,
           {
-            borderColor: theme.inputBorder,
             backgroundColor: theme.elementBackground,
+            borderColor: theme.inputBorder,
           },
         ]}
       >
-        <Text style={[styles.rowLabel, { color: theme.mainText }]}>
-          Dark mode
-        </Text>
+        <View style={styles.settingText}>
+          <Text style={[styles.settingTitle, { color: theme.mainText }]}>
+            Dark mode
+          </Text>
+          <Text style={[styles.caption, { color: theme.secondaryText }]}>
+            {isDark ? "On" : "Off"} · saved on this device
+          </Text>
+        </View>
         <Switch
           value={isDark}
-          onValueChange={(isOn) =>
-            setColorMode(isOn ? "darkMode" : "lightMode")
-          }
-          trackColor={{ false: theme.inputBorder, true: theme.btnBackground }}
+          onValueChange={(on) => setColorMode(on ? "darkMode" : "lightMode")}
+          trackColor={{ false: theme.btnBackground, true: theme.btnBackground }}
           ios_backgroundColor={theme.btnBackground}
-          thumbColor={theme.btnText}
+          thumbColor={theme.elementBackground}
           accessibilityLabel="Dark mode"
-          style={[styles.toggle]}
         />
       </View>
+
+      {/* ---------- Sign out (signed in only) ---------- */}
+      {isSignedIn && (
+        <View style={styles.signOutWrap}>
+          <OutlineButton
+            title={signingOut ? "Signing out..." : "Sign out"}
+            color={theme.btnBackground}
+            icon="log-out-outline"
+            onPress={handleSignOut}
+          />
+          {signOutError !== "" && (
+            <Text
+              style={[styles.errorText, { color: theme.errorTextColor }]}
+              accessibilityRole="alert"
+            >
+              {signOutError}
+            </Text>
+          )}
+        </View>
+      )}
     </ScrollView>
   );
 }
 
+// Secondary (outlined) button used for "Sign up" and "Sign out".
+// Kept local so Button.tsx doesn't need to change.
+type OutlineButtonProps = {
+  title: string;
+  onPress: () => void;
+  color: string;
+  icon?: React.ComponentProps<typeof Ionicons>["name"];
+};
+
+function OutlineButton({ title, onPress, color, icon }: OutlineButtonProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      style={[styles.outlineButton, { borderColor: color }]}
+    >
+      {icon && <Ionicons name={icon} size={22} color={color} />}
+      <Text style={[styles.outlineButtonText, { color }]}>{title}</Text>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   container: {
     padding: spacing.xl,
-    paddingTop: 20,
-  },
-  screenTitle: {
-    fontSize: fontSize.screenTitle,
-    fontWeight: "bold",
-    marginBottom: spacing.xs,
-  },
-  card: {
-    borderWidth: 1,
-    borderRadius: spacing.md,
-    padding: spacing.xl,
-    alignItems: "center",
-    marginBottom: spacing.xxl,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    borderRadius: spacing.md,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: spacing.lg,
-  },
-  logoText: {
-    fontSize: fontSize.screenTitle,
-    fontWeight: "bold",
-    fontFamily: "Manrope",
-  },
-  text: { fontSize: fontSize.body, marginBottom: spacing.md },
-  profileMessage: {
-    fontSize: fontSize.body,
-    marginBottom: spacing.md,
-    textAlign: "center",
-  },
-  cardTitle: {
-    fontSize: fontSize.label,
-    fontWeight: "bold",
-    marginTop: spacing.lg,
-    marginBottom: spacing.lg,
-  },
-  buttonWrap: {
-    width: "100%",
-    marginTop: spacing.sm,
-    borderRadius: 10,
+    paddingBottom: spacing.xxl,
   },
   sectionTitle: {
     fontSize: fontSize.sectionTitle,
-    fontWeight: "bold",
+    fontFamily: fontFamily.title,
+    marginTop: spacing.sm,
     marginBottom: spacing.md,
   },
-  toggle: {
-    marginTop: 9,
+  caption: {
+    fontSize: fontSize.caption,
   },
-  row: {
-    minHeight: 48,
+  card: {
     borderWidth: 1,
-    borderRadius: spacing.sm,
-    paddingHorizontal: spacing.md,
+    borderRadius: 16,
+    marginBottom: spacing.xl,
+  },
+
+  // Guest card
+  guestCard: {
+    padding: spacing.xl,
+    alignItems: "center",
+  },
+  logoBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logo: {
+    width: 80,
+    height: 80,
+  },
+  brandName: {
+    fontSize: fontSize.screenTitle,
+    fontFamily: fontFamily.roovia,
+    fontWeight: "bold",
+    marginTop: spacing.sm,
+  },
+  guestTitle: {
+    fontSize: fontSize.sectionTitle,
+    fontFamily: fontFamily.title,
+    textAlign: "center",
+    marginTop: spacing.lg,
+  },
+  guestMessage: {
+    fontSize: fontSize.label,
+    lineHeight: 24,
+    textAlign: "center",
+    marginTop: spacing.sm,
+    marginBottom: spacing.xl,
+  },
+  buttonStack: {
+    alignSelf: "stretch",
+    gap: spacing.md,
+  },
+
+  // Account card
+  accountCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
+    padding: spacing.lg,
+  },
+  avatar: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  accountText: {
+    flex: 1,
+  },
+  email: {
+    fontSize: fontSize.body,
+    fontWeight: "bold",
+    marginTop: spacing.xs,
+  },
+
+  // Dark mode row
+  settingRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    padding: spacing.lg,
+    minHeight: 64,
   },
-  rowLabel: { fontSize: fontSize.body },
+  settingText: {
+    flex: 1,
+    paddingRight: spacing.md,
+  },
+  settingTitle: {
+    fontSize: fontSize.body,
+    fontWeight: "bold",
+    marginBottom: spacing.xs,
+  },
+
+  // Sign out
+  signOutWrap: {
+    marginTop: spacing.xs,
+  },
+  errorText: {
+    fontSize: fontSize.caption,
+    marginTop: spacing.sm,
+    textAlign: "center",
+  },
+
+  // Outline button
+  outlineButton: {
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 48,
+    minWidth: 48,
+    padding: spacing.md,
+    borderWidth: 2,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  outlineButtonText: {
+    fontSize: fontSize.body,
+    fontWeight: "600",
+  },
 });
