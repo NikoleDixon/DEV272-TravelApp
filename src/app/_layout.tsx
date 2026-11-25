@@ -16,6 +16,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import { BucketListProvider } from "../context/SavedBucketList";
 
 const queryClient = new QueryClient();
 
@@ -37,9 +38,11 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ColorModeProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
+          <BucketListProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </BucketListProvider>
         </ColorModeProvider>
       </AuthProvider>
     </QueryClientProvider>
