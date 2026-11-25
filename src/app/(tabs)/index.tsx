@@ -67,12 +67,12 @@ export default function Index() {
   });
 
   // Add or remove a destination from the bucket list.
-  // Signed-out users are sent to Sign in instead.
+  // Signed-out users are sent to Profile.
   const handleToggleSave = async (id: string) => {
     const result = await toggleSave(id);
 
     if (result === "signed-out") {
-      router.push("/sign-in");
+      router.push("/(tabs)/profile");
     } else if (result === "error") {
       Alert.alert(
         "Couldn't update your bucket list",

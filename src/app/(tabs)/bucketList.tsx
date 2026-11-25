@@ -7,7 +7,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
 import { categories, getCategoryLabel } from "../../constants/categories";
 import { useColorMode } from "../../context/ColorMode";
-import { useBucketList } from "../../context/SavedBucketList";
+import { useBucketList } from "../../hooks/useBucketList";
 import { colors } from "../../design/themes";
 import { useDestinations } from "../../hooks/useDestinations";
 
@@ -49,7 +49,7 @@ export default function BucketList() {
     const result = await toggleSave(id);
 
     if (result === "signed-out") {
-      router.push("/sign-in" as Href); // TODO: remove "as Href" after sign-in is merged
+      router.push("/(tabs)/profile"); // TODO: remove "as Href" after sign-in is merged
     } else if (result === "error") {
       setSaveError("Could not update your bucket list. Please try again.");
     } else {
