@@ -22,6 +22,13 @@ jest.mock("../api/destinations", () => ({
   ]),
 }));
 
+jest.mock("@/hooks/useBucketList", () => ({
+  useBucketList: () => ({
+    savedIds: [],
+    toggleSave: jest.fn().mockResolvedValue("ok"),
+  }),
+}));
+
 test("Explore screen shows the destinations", async () => {
   const queryClient = new QueryClient({
     defaultOptions: {
