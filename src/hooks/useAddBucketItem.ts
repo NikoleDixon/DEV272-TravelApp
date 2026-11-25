@@ -7,6 +7,7 @@ export function useAddBucketItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ["bucket-items-mutation"],
     networkMode: "always",
     mutationFn: ({
       userId,

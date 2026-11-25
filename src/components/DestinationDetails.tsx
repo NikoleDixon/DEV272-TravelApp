@@ -1,9 +1,11 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View, Alert } from "react-native";
 import { useColorMode } from "../context/ColorMode";
 import { colors, fontFamily, fontSize, spacing } from "../design/themes";
 import type { Destination } from "../types/destination";
 import { Button } from "./Button";
+import { useRouter } from "expo-router";
+import { useBucketList } from "../hooks/useBucketList";
 
 type Props = {
   destination: Destination;
@@ -12,7 +14,21 @@ type Props = {
 export default function DestinationDetails({ destination }: Props) {
   const { colorMode } = useColorMode();
   const theme = colors[colorMode];
+  const router = useRouter();
+  const { savedIds, toggleSave } = useBucketList();
+  const isSaved = savedIds.includes(destination.id);
+  const handleToggleSave = async () => {
+    const result = await toggleSave(destination.id);
 
+    if (result === "signed-out") {
+      router.push("/(tabs)/profile");
+    } else if (result === "error") {
+      Alert.alert(
+        "Couldn't update your bucket list",
+        "Please try again in a moment.",
+      );
+    }
+  };
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -128,7 +144,10 @@ export default function DestinationDetails({ destination }: Props) {
           alignSelf: "center",
         }}
       >
-        <Button title="Save to Bucket List" onPress={() => {}} />
+        <Button
+          title={isSaved ? "Remove from Bucket List" : "Save to Bucket List"}
+          onPress={handleToggleSave}
+        />
 
         <Button
           title={`Plan a Trip with ${destination.name}`}

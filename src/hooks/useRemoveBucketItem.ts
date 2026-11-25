@@ -7,6 +7,7 @@ export function useRemoveBucketItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ["bucket-items-mutation"],
     networkMode: "always",
     mutationFn: ({ id }: { id: string; userId: string }) =>
       removeBucketItem(id),
