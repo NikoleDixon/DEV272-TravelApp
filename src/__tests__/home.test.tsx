@@ -3,7 +3,6 @@ import { render } from "@testing-library/react-native";
 
 import Index from "@/app/(tabs)/index";
 import { ColorModeProvider } from "@/context/ColorMode";
-import { BucketListProvider } from "../context/SavedBucketList";
 
 jest.mock("../api/destinations", () => ({
   fetchDestinations: jest.fn().mockResolvedValue([
@@ -23,6 +22,13 @@ jest.mock("../api/destinations", () => ({
   ]),
 }));
 
+jest.mock("@/hooks/useBucketList", () => ({
+  useBucketList: () => ({
+    savedIds: [],
+    toggleSave: jest.fn().mockResolvedValue("ok"),
+  }),
+}));
+
 test("Explore screen shows the destinations", async () => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -35,9 +41,7 @@ test("Explore screen shows the destinations", async () => {
   const { findByText } = await render(
     <QueryClientProvider client={queryClient}>
       <ColorModeProvider>
-        <BucketListProvider>
-          <Index />
-        </BucketListProvider>
+        <Index />
       </ColorModeProvider>
     </QueryClientProvider>,
   );

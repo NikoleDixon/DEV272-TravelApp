@@ -1,6 +1,7 @@
-import { Href, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Pressable,
   StyleSheet,
@@ -8,13 +9,17 @@ import {
   TextInput,
   View,
 } from "react-native";
+import CategoryFilter from "../../components/CategoryFilter";
 import DestinationCard from "../../components/DestinationCard";
+import EmptyState from "../../components/EmptyState";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
+import ResultsHeading from "../../components/ResultsHeading";
+import ScreenHeader from "../../components/ScreenHeader";
 import { categories, getCategoryLabel } from "../../constants/categories";
 import { useColorMode } from "../../context/ColorMode";
-import { useBucketList } from "../../context/SavedBucketList";
-import { colors } from "../../design/themes";
+import { colors, fontSize, spacing } from "../../design/themes";
+import { useBucketList } from "../../hooks/useBucketList";
 import { useDestinations } from "../../hooks/useDestinations";
 
 export default function Index() {
@@ -25,14 +30,13 @@ export default function Index() {
   // Get destination data and loading or error status.
   const { data, isLoading, isError } = useDestinations();
 
-  // Store search text, selected category, and any save error message.
+  // Saved destinations come from the shared bucket list (same data as the Bucket List tab).
+  const { savedIds, toggleSave } = useBucketList();
+
+  // Store search text and selected category.
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [saveError, setSaveError] = useState("");
-
-  // Saved destinations come from the shared bucket list (Supabase).
-  const { savedIds, toggleSave } = useBucketList();
 
   // Wait 300 milliseconds after the user stops typing.
   useEffect(() => {
@@ -43,6 +47,10 @@ export default function Index() {
     return () => clearTimeout(timer);
   }, [searchText]);
 
+  const selected = categories.find(
+    (category) => category.value === selectedCategory,
+  );
+
   // Filter destinations by search text and category.
   const filteredDestinations = (data ?? []).filter((item) => {
     const search = debouncedSearch.toLowerCase();
@@ -52,26 +60,24 @@ export default function Index() {
       item.country.toLowerCase().includes(search) ||
       item.region.toLowerCase().includes(search);
 
-    const selected = categories.find(
-      (category) => category.value === selectedCategory,
-    );
-
     const matchesCategory =
       selectedCategory === "all" || selected?.types.includes(item.category);
 
     return matchesSearch && matchesCategory;
   });
 
-  // Add or remove a destination from the saved list.
-  const handleToggle = async (id: string) => {
+  // Add or remove a destination from the bucket list.
+  // Signed-out users are sent to Sign in instead.
+  const handleToggleSave = async (id: string) => {
     const result = await toggleSave(id);
 
     if (result === "signed-out") {
-      router.push("/sign-in" as Href); // TODO: remove "as Href" after sign-in is merged
+      router.push("/sign-in");
     } else if (result === "error") {
-      setSaveError("Could not update your bucket list. Please try again.");
-    } else {
-      setSaveError("");
+      Alert.alert(
+        "Couldn't update your bucket list",
+        "Please try again in a moment.",
+      );
     }
   };
 
@@ -79,17 +85,15 @@ export default function Index() {
   if (isLoading) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background }]}>
-        <Text style={[styles.title, { color: theme.mainText }]}>
-          Discover, Save and Explore
-        </Text>
-
-        <Text style={{ color: theme.secondaryText }}>
+        <ScreenHeader title="Discover, Save and Explore" />
+        <Text style={[styles.loadingText, { color: theme.secondaryText }]}>
           Loading destinations...
         </Text>
-
-        <LoadingSkeleton />
-        <LoadingSkeleton />
-        <LoadingSkeleton />
+        <View style={styles.skeletons}>
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+        </View>
       </View>
     );
   }
@@ -98,10 +102,7 @@ export default function Index() {
   if (isError) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background }]}>
-        <Text style={[styles.title, { color: theme.mainText }]}>
-          Discover, Save and Explore
-        </Text>
-
+        <ScreenHeader title="Discover, Save and Explore" />
         <ErrorMessage
           title="Unable to load destinations"
           message="Please try again later."
@@ -112,14 +113,11 @@ export default function Index() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {/* Explore screen header */}
-      <Text style={[styles.title, { color: theme.mainText }]}>
-        Discover, Save and Explore
-      </Text>
+      <ScreenHeader
+        title="Discover, Save and Explore"
+        subtitle="Find your next trip"
+      />
 
-      <Text style={[styles.subtitle, { color: theme.secondaryText }]}>
-        Find your next trip
-      </Text>
       {/* Search destinations and clear the search text. */}
       <View style={styles.searchRow}>
         <TextInput
@@ -133,6 +131,7 @@ export default function Index() {
           ]}
           placeholder="Search destinations..."
           placeholderTextColor={theme.secondaryText}
+          accessibilityLabel="Search destinations"
           value={searchText}
           onChangeText={setSearchText}
         />
@@ -144,6 +143,8 @@ export default function Index() {
               { backgroundColor: theme.btnBackground },
             ]}
             onPress={() => setSearchText("")}
+            accessibilityRole="button"
+            accessibilityLabel="Clear search"
           >
             <Text style={[styles.clearButtonText, { color: theme.btnText }]}>
               Clear Search
@@ -152,69 +153,20 @@ export default function Index() {
         )}
       </View>
 
-      {/* Display category filters. */}
-      <View style={styles.categoryContainer}>
-        {categories.map((category) => (
-          <Pressable
-            key={category.value}
-            style={[
-              styles.categoryChip,
-              {
-                backgroundColor:
-                  selectedCategory === category.value
-                    ? theme.btnBackground
-                    : theme.elementBackground,
-                borderColor: theme.inputBorder,
-              },
-            ]}
-            onPress={() => setSelectedCategory(category.value)}
-          >
-            <Text
-              style={[
-                styles.categoryText,
-                {
-                  color:
-                    selectedCategory === category.value
-                      ? theme.btnText
-                      : theme.mainText,
-                },
-              ]}
-            >
-              {category.label}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
+      <CategoryFilter
+        categories={categories}
+        selected={selectedCategory}
+        onSelect={setSelectedCategory}
+      />
 
-      {/* Show the selected category and number of results. */}
-      <View style={styles.resultsHeading}>
-        <Text
-          style={[styles.resultsTitle, { color: theme.mainText }]}
-          numberOfLines={1}
-        >
-          {selectedCategory === "all"
+      <ResultsHeading
+        title={
+          selectedCategory === "all"
             ? "All destinations"
-            : categories.find((category) => category.value === selectedCategory)
-                ?.label}
-        </Text>
-
-        <Text
-          style={[styles.resultsCount, { color: theme.secondaryText }]}
-          numberOfLines={1}
-        >
-          Showing {filteredDestinations.length} places
-        </Text>
-      </View>
-
-      {/* Only shows when saving or removing failed. */}
-      {saveError !== "" && (
-        <Text
-          style={[styles.saveError, { color: theme.errorTextColor }]}
-          accessibilityRole="alert"
-        >
-          {saveError}
-        </Text>
-      )}
+            : (selected?.label ?? "")
+        }
+        count={filteredDestinations.length}
+      />
 
       {/* Display destination cards or an empty results message. */}
       <FlatList
@@ -223,36 +175,27 @@ export default function Index() {
         contentContainerStyle={styles.listContainer}
         ItemSeparatorComponent={() => <View style={styles.cardSeparator} />}
         ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyTitle, { color: theme.mainText }]}>
-              No destinations found
-            </Text>
-
-            <Text style={[styles.emptyMessage, { color: theme.secondaryText }]}>
-              Try another name or category.
-            </Text>
-          </View>
+          <EmptyState
+            title="No destinations found"
+            message="Try another name or category."
+          />
         }
-        renderItem={({ item }) => {
-          const categoryLabel = getCategoryLabel(item.category);
-
-          return (
-            <DestinationCard
-              name={item.name}
-              country={item.country}
-              category={categoryLabel}
-              imageUrl={item.image_url}
-              isSaved={savedIds.includes(item.id)}
-              onToggleSave={() => handleToggle(item.id)}
-              onPress={() =>
-                router.push({
-                  pathname: "/destination/[id]",
-                  params: { id: item.id },
-                })
-              }
-            />
-          );
-        }}
+        renderItem={({ item }) => (
+          <DestinationCard
+            name={item.name}
+            country={item.country}
+            category={getCategoryLabel(item.category)}
+            imageUrl={item.image_url}
+            isSaved={savedIds.includes(item.id)}
+            onToggleSave={() => handleToggleSave(item.id)}
+            onPress={() =>
+              router.push({
+                pathname: "/destination/[id]",
+                params: { id: item.id },
+              })
+            }
+          />
+        )}
       />
     </View>
   );
@@ -261,103 +204,45 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: spacing.xl,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 8,
+  loadingText: {
+    fontSize: fontSize.body,
+    marginBottom: spacing.md,
   },
-  subtitle: {
-    fontSize: 18,
-    marginBottom: 24,
+  skeletons: {
+    gap: spacing.md,
   },
   searchRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    marginBottom: 20,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
   },
   searchInput: {
     flex: 1,
-    height: 48,
+    minHeight: 48,
     borderWidth: 1,
     borderRadius: 16,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
+    fontSize: fontSize.body,
   },
   clearButton: {
-    height: 48,
-    paddingHorizontal: 14,
+    minHeight: 48,
+    paddingHorizontal: spacing.lg,
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
   },
   clearButtonText: {
-    fontSize: 14,
+    fontSize: fontSize.caption,
     fontWeight: "600",
-  },
-  categoryContainer: {
-    height: 64,
-    flexDirection: "row",
-    gap: 8,
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  categoryChip: {
-    width: 76,
-    height: 44,
-    flexShrink: 0,
-    borderWidth: 1,
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  categoryText: {
-    fontSize: 16,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  resultsHeading: {
-    height: 40,
-    flexShrink: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  resultsTitle: {
-    fontSize: 22,
-    lineHeight: 28,
-    fontWeight: "bold",
-  },
-  resultsCount: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  saveError: {
-    fontSize: 14,
-    marginBottom: 8,
   },
   listContainer: {
     flexGrow: 1,
-    paddingBottom: 20,
+    paddingBottom: spacing.xl,
   },
   cardSeparator: {
-    height: 16,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  emptyMessage: {
-    fontSize: 14,
-    textAlign: "center",
-    marginTop: 8,
+    height: spacing.lg,
   },
 });

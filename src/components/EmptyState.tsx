@@ -1,13 +1,14 @@
+import { useColorMode } from "@/context/ColorMode";
+import { colors, fontFamily, fontSize, spacing } from "@/design/themes";
 import type { ReactNode } from "react";
-import { Pressable, Text, View } from "react-native";
-import { useColorMode } from "../context/ColorMode";
-import { colors } from "../design/themes";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type EmptyStateProps = {
   title: string;
   message: string;
-  buttonText: string;
-  onButtonPress: () => void;
+  // The button only shows when both of these are given.
+  buttonText?: string;
+  onButtonPress?: () => void;
   icon?: ReactNode;
 };
 
@@ -20,53 +21,62 @@ export default function EmptyState({
 }: EmptyStateProps) {
   const { colorMode } = useColorMode();
   const theme = colors[colorMode];
+
   return (
-    <View
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24,
-      }}
-    >
-      {icon && <View style={{ marginBottom: 20 }}>{icon}</View>}
-      <Text
-        style={{
-          fontSize: 22,
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: 8,
-          color: theme.mainText,
-        }}
-      >
-        {title}
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          textAlign: "center",
-          marginBottom: 20,
-          lineHeight: 24,
-          color: theme.secondaryText,
-        }}
-      >
+    <View style={styles.container}>
+      {icon && <View style={styles.icon}>{icon}</View>}
+      <Text style={[styles.title, { color: theme.mainText }]}>{title}</Text>
+      <Text style={[styles.message, { color: theme.secondaryText }]}>
         {message}
       </Text>
-      <Pressable
-        onPress={onButtonPress}
-        accessibilityRole="button"
-        accessibilityLabel={buttonText}
-        style={{
-          backgroundColor: theme.btnBackground,
-          padding: 12,
-          borderRadius: 8,
-          minHeight: 48,
-          minWidth: 48,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text>{buttonText}</Text>
-      </Pressable>
+      {buttonText && onButtonPress && (
+        <Pressable
+          onPress={onButtonPress}
+          accessibilityRole="button"
+          accessibilityLabel={buttonText}
+          style={[styles.button, { backgroundColor: theme.btnBackground }]}
+        >
+          <Text style={[styles.buttonText, { color: theme.btnText }]}>
+            {buttonText}
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: spacing.xl,
+  },
+  icon: {
+    marginBottom: spacing.xl,
+  },
+  title: {
+    fontSize: fontSize.sectionTitle,
+    fontFamily: fontFamily.title,
+    textAlign: "center",
+    marginBottom: spacing.sm,
+  },
+  message: {
+    fontSize: fontSize.body,
+    lineHeight: 24,
+    textAlign: "center",
+    marginBottom: spacing.xl,
+  },
+  button: {
+    padding: spacing.md,
+    borderRadius: 8,
+    minHeight: 48,
+    minWidth: 48,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: fontSize.body,
+    fontWeight: "600",
+  },
+});
