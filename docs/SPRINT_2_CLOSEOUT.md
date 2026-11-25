@@ -36,9 +36,7 @@
 
 ## 4. Bugs and blockers
 
-| Issue | Title           | Impact (blocking / moderate / minor) | Owner | Status                                    |
-| ----- | --------------- | ------------------------------------ | ----- | ----------------------------------------- |
-| #20   | Bucket List Tab | bug                                  | ND/JN | JN working on fix before Tuesday deadline |
+N/A - Jaqueline fixed the issue we were having in time for the deadline
 
 ## 5. Retrospective
 
@@ -46,6 +44,7 @@
 
 - Communication
 - Having Lizbeth start on Supabase and accociated informaiton completed early in the week
+- Working on issues in real time together
 
 **What did not work well**
 
@@ -56,6 +55,8 @@
 
 - From Lizbeth to Nikole and Jaqueline — The team was flexible on working earlier than normal and moving the sprint wrap meeting ahead since I would miss it on our normal day due to flying out.
 - From Nikole to Jaqueline - Understanding and working with Lizbeth and I overlapping her hooks and mutations and other work. We worked together to figure out the best way to still ahve the app work with all the code. 
+- From Nikole to Jaqueline - Fixing the bug on the Bucket List in time for the deadline
+- From Jaqueline to Nikole - Writing the two screens that were in this sprint
 
 **Action items for next sprint**
 | Action | Owner | Done by |
@@ -72,6 +73,6 @@
 
 | Member    | Hours | Focus                  |
 | --------- | ----- | ---------------------- |
-| Nikole    |       | Bucket List Tab, Profiles Tab, Quality & Tests |
+| Nikole    | 33    | Bucket List Tab, Profiles Tab, Quality & Tests, Most of the time was struggling with how... |
 | Lizbeth   | 28    | Tables, Auth, security rules, seeded destinations, Supabase client, Query provider, sign in state, and .env guide |
-| Jaqueline |       | Style: Improve DestinationCard Styling, Add and remove mutations, & Query hooks |
+| Jaqueline | 20    | Style: Improve DestinationCard Styling, Add and remove mutations, & Query hooks |
