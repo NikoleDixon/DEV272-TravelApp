@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/context/AuthContext";
 import { ColorModeProvider } from "@/context/ColorMode";
 import {
   CormorantGaramond_300Light,
@@ -34,11 +35,13 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
   return (
     <QueryClientProvider client={queryClient}>
-      <ColorModeProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </ColorModeProvider>
+      <AuthProvider>
+        <ColorModeProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </ColorModeProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -15,7 +15,7 @@ export default function DestinationPage() {
   const theme = colors[colorMode];
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: destination, isPending, isError } = useDestination(id);
+  const { data: destination, isPending, isError, refetch } = useDestination(id);
   if (isPending) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -29,6 +29,7 @@ export default function DestinationPage() {
         <ErrorMessage
           title="Unexpected Detour!"
           message="This wasn't on the itinerary. Let's get back on track!"
+          onRetry={() => refetch()}
         />
       </View>
     );
