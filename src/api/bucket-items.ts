@@ -1,17 +1,22 @@
 import { supabase } from "../lib/supabase";
-import type { BucketItem } from "../types/bucket-item";
+import type {
+  BucketItem,
+  BucketItemWithDestination,
+} from "../types/bucket-item";
 
-export async function fetchBucketItems(userId: string): Promise<BucketItem[]> {
+export async function fetchBucketItems(
+  userId: string,
+): Promise<BucketItemWithDestination[]> {
   const { data, error } = await supabase
     .from("bucket_items")
-    .select("*")
+    .select("*, destinations(*)")
     .eq("user_id", userId);
 
   if (error) {
     throw error;
   }
 
-  return data as BucketItem[];
+  return data as BucketItemWithDestination[];
 }
 
 export async function addBucketItem(
