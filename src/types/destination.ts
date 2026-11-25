@@ -8,5 +8,5 @@ export type Destination = {
   image_url: string;
   best_season: string;
   cost_level: string;
-  created_at: string;
+  created_at: string | null;
 };

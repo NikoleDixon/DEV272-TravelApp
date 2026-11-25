@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchDestination } from "../data/destination-api";
+import { fetchDestination } from "../api/destinations";
 
 export function useDestination(id: string) {
   return useQuery({

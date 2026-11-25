@@ -15,9 +15,9 @@ export const colors = {
   },
 
   darkMode: {
-    background: "#141C1F",
-    elementBackground: "#1F2A2E",
-    mainText: "#F5EEDF",
+    background: "#1A3524",
+    elementBackground: "#24442F",
+    mainText: "#dff5eb",
     secondaryText: "#C2CCC9",
     btnBackground: "#8CC79F",
     btnText: "#13261A",
@@ -25,7 +25,7 @@ export const colors = {
     highlightColor: "#7CC6CC",
     errorTextColor: "#FF9E91",
     placeholderBackground: "#2B4640",
-    cardBorderColor: "#8F8164",
+    cardBorderColor: "#B3A27F",
     inputBorder: "#8A9A9F",
   },
 };
@@ -45,4 +45,9 @@ export const fontSize = {
   label: 16,
   sectionTitle: 24,
   screenTitle: 32,
+};
+
+export const fontFamily = {
+  roovia: "Manrope",
+  title: "CormorantBold",
 };
